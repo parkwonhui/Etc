@@ -17,7 +17,7 @@ public class BufferReader {
 		int value = 0;
 		try {
 			value = Integer.parseInt(reader.readLine());
-			System.out.println(value);
+
 		}catch(Exception e) {
 			return -1;
 		}
