@@ -42,6 +42,7 @@ public class MiniDos {
 	
 	// 파일목록 출력
 	public void printList(){
+		System.out.println("printList:"+file);
 		File[] arr = file.listFiles();
 		for(int i = 0; i < arr.length; ++i)
 			System.out.println(arr[i].getName()+"\t"+arr[i].getName());
@@ -74,8 +75,7 @@ public class MiniDos {
 				return false;
 			}
 
-			currentPath = moveFile.getPath();
-			file = moveFile;
+			UpdateCurrentFile(moveFile, moveFile.getPath());
 			
 		}else{
 			System.out.println("else");
@@ -84,7 +84,7 @@ public class MiniDos {
 			if(false == file.exists())
 				return false;
 			
-			currentPath = file.getPath();
+			UpdateCurrentFile(file, file.getPath());
 		}
 		
 		return true;
@@ -103,21 +103,26 @@ public class MiniDos {
 		copyFile(file, copyFile);
 	}
 	
-	public void copyFile(File ori, File copy){
+	public void copyFile(File ori, File copy) throws Exception{
+		System.out.println("CopyFile");
+		// 여기도 ../체크해야할듯?
 		File[] fileList = file.listFiles();
 		
 		for(int i = 0; i < fileList.length; ++i){
 			file = fileList[i];
+			System.out.println("file:"+file);
 			if(true == file.isDirectory()){
 				//폴더 생성
 				File newCopy = new File(copy, file.getName());
-				if(false == newCopy.mkdir()){
-					System.out.println(file.getName()+"폴더 생성에 실패했습니다\n");
-					return;
+				System.out.println("newCopy:"+newCopy.getPath());
+				if(false == newCopy.mkdirs()){
+					throw new Exception("아 에러남;");
 				}
+				
 				copyFile(file, newCopy);
 				
 			}else{
+				System.out.println("copy");
 				copy(file, copy);
 			}
 		}
@@ -153,7 +158,8 @@ public class MiniDos {
 		}
 	}
 	
-	protected void UpdateCurrentFile(File f, String str){
-		file = f;
+	protected void UpdateCurrentFile(File currentFile, String path){
+		file = currentFile;
+		currentPath = path;		
 	}
 }
