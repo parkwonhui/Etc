@@ -30,7 +30,8 @@ public class Main {
 		BufferedReader buffReader = null;
 	
 		// 현재위치 구해서 나중에 넣어주자
-		MiniDos minidos = new MiniDos("E:\\work\\study\\kosta");
+		// D:\\study\\kosta\\
+		MiniDos minidos = new MiniDos("D:\\study\\kosta\\mission\\2018_11_10_Baseball");
 		try {
 			
 			streamReader = new InputStreamReader(System.in);

@@ -100,45 +100,54 @@ public class MiniDos {
 	public void copyDirectory(String copyPath) throws Exception{
 		file = new File(currentPath);
 		File copyFile = new File(copyPath);
+		
+		System.out.println("copyFile:"+copyFile.getPath());
+		copyFile.mkdir();
 		copyFile(file, copyFile);
 	}
 	
 	public void copyFile(File ori, File copy) throws Exception{
-		System.out.println("CopyFile");
 		// 여기도 ../체크해야할듯?
 		File[] fileList = file.listFiles();
 		
 		for(int i = 0; i < fileList.length; ++i){
 			file = fileList[i];
-			System.out.println("file:"+file);
+			//System.out.println("file:"+file);
 			if(true == file.isDirectory()){
 				//폴더 생성
-				File newCopy = new File(copy, file.getName());
-				System.out.println("newCopy:"+newCopy.getPath());
-				if(false == newCopy.mkdirs()){
+				File newFile = new File(copy, file.getName());
+				//System.out.println("newCopy:"+newCopy.getPath());
+				if(false == newFile.mkdirs()){
 					throw new Exception("아 에러남;");
 				}
 				
-				copyFile(file, newCopy);
+				copyFile(file, newFile);
 				
 			}else{
 				System.out.println("copy");
-				copy(file, copy);
+				File newFile = new File(copy, file.getName());
+				copy(file, newFile);
 			}
 		}
 	}
 	
-	// 파일복사
+	// 파일복사 D:\ex
+	// copy 함수에서만 문제있음..
 	public void copy(File ori, File copy){
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
-		
+		System.out.println("ori:"+ori.getPath());
+		System.out.println("copy:"+copy.getPath());
+
 		try{
 		fileInputStream = new FileInputStream(ori);
 		fileOutputStream = new FileOutputStream(copy);
-		int value = fileInputStream.read();
-		while(-1 != value){
+		while(true){
+			int value = fileInputStream.read();
 			fileOutputStream.write(value);
+			
+			if(-1 == value)
+				break;
 		}
 		
 		}catch(Exception e){
