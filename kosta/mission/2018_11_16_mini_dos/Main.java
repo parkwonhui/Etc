@@ -29,9 +29,8 @@ public class Main {
 		InputStreamReader streamReader = null;
 		BufferedReader buffReader = null;
 	
-		// 현재위치 구해서 나중에 넣어주자
-		// D:\\study\\kosta\\
-		MiniDos minidos = new MiniDos("D:\\study\\kosta\\mission\\2018_11_10_Baseball");
+		MiniDos minidos = new MiniDos(System.getProperty("user.dir"));	// 현재위치
+
 		try {
 			
 			streamReader = new InputStreamReader(System.in);
@@ -49,13 +48,13 @@ public class Main {
 				if(true == firstPath.equals("ls")){
 					minidos.printList();
 				}else if(true == firstPath.equals("cd")){
-					minidos.moveDirectory(twoPath);
+					if(false == minidos.moveDirectory(twoPath))
+						System.out.println(twoPath+"No such file or directory");
+					
 				}else if(true == firstPath.equals("mkdir")){
-					if(false == minidos.creatDirect(twoPath)) {
+					if(false == minidos.creatDirect(twoPath))
 						 System.out.println("cannot create directory"+twoPath+": No such file or directory");
-
-						
-					}
+					
 				}else if(true == firstPath.equals("cp")){
 					minidos.copyDirectory(twoPath);
 				}else if(true == firstPath.equals("pwd")){
