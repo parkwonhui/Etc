@@ -42,15 +42,23 @@ public class MiniDos {
 	public boolean moveDirectory(final String movePath){
 		
 		String tempMovePath = movePath;
-		while(true == isMoveParentDirectory(tempMovePath)){			 // 상위폴더 이동
+		while(true == isMatcherFind(tempMovePath, "^[../]")){			 // 상위폴더 이동
 			tempMovePath = MoveParentDirectory(tempMovePath);
 			if(null == tempMovePath)
 				return false;
 		}
 		
-		File file = new File(getCurrentPath(), tempMovePath);
-		if(false == file.exists())
-			return false;
+		File file = null;
+		if(true == isMatcherFind(tempMovePath, "^[a-zA-Z]:\\\\")) {		// 최상위 폴더로 이동
+			file = new File(movePath);
+			if(false == file.exists())
+				return false;
+			
+		}else {
+			file = new File(getCurrentPath(), tempMovePath);
+			if(false == file.exists())
+				return false;	
+		}
 		
 		updateCurrentFile(file, file.getPath());
 		
@@ -60,7 +68,7 @@ public class MiniDos {
 	// 새로운 디렉토리 생성
 	public boolean creatDirect(final String newDirectoryName){
 		String tempMovePath = newDirectoryName;
-		while(true == isMoveParentDirectory(tempMovePath)){			 // 상위폴더 이동
+		while(true == isMatcherFind(tempMovePath, "^[../]")){			 // 상위폴더 이동
 			tempMovePath = MoveParentDirectory(tempMovePath);
 			if(null == tempMovePath)
 				return false;
@@ -71,11 +79,28 @@ public class MiniDos {
 	}
 	
 	// 현재 디렉토리로 모든 파일 복사 하기
-	public void copyDirectory(String copyPath) throws Exception{
-		file = new File(getCurrentPath());
-		File copyFile = new File(copyPath);
+	public void copyDirectory(final String copyPath) throws Exception{
 		
-		System.out.println("copyFile:"+copyFile.getPath());
+		String tempMovePath = copyPath;
+		File moveFile = null;
+		while(true == isMatcherFind(tempMovePath, "^[../]")){			 // 상위폴더 이동
+			
+			moveFile = getMoveParentDirectoryFile(tempMovePath);
+			if(null == moveFile)
+				return;
+			
+			tempMovePath = removeStartPath(tempMovePath, '/');
+			if(null == tempMovePath)
+				return;
+		}
+		
+		File copyFile = null;
+		if(isMatcherFind(tempMovePath, "^[a-zA-Z]:\\\\")) {				// 절대 경로 체크
+			copyFile = new File(tempMovePath);
+		}else {
+			copyFile = new File(moveFile, tempMovePath);	// 절대 경로가 아닌 현재 폴더 위치에서 찾음
+		}	
+			
 		copyFile.mkdir();
 		copyFile(file, copyFile);
 	}
@@ -84,28 +109,25 @@ public class MiniDos {
 		// 여기도 ../체크해야할듯?
 		File[] fileList = getCurrentFile().listFiles();
 		
+		File tempfile = null;
 		for(int i = 0; i < fileList.length; ++i){
-			file = fileList[i];
-			//System.out.println("file:"+file);
-			if(true == file.isDirectory()){
+			tempfile = fileList[i];
+			if(true == tempfile.isDirectory()){
 				//폴더 생성
-				File newFile = new File(copy, file.getName());
-				//System.out.println("newCopy:"+newCopy.getPath());
+				File newFile = new File(copy, tempfile.getName());
 				if(false == newFile.mkdirs()){
 					throw new Exception("아 에러남;");
 				}
 				
-				copyFile(file, newFile);
+				copyFile(tempfile, newFile);
 				
 			}else{
-				File newFile = new File(copy, file.getName());
-				copy(file, newFile);
+				File newFile = new File(copy, tempfile.getName());
+				copy(tempfile, newFile);
 			}
 		}
 	}
 	
-	// 파일복사 D:\ex
-	// copy 함수에서만 문제있음..
 	public void copy(File ori, File copy){
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
@@ -157,8 +179,8 @@ public class MiniDos {
 		return tempMovePath;
 	}
 	
-	private boolean isMoveParentDirectory(final String path) {		// 상위폴더로 이동하는가?
-		Pattern pattern = Pattern.compile("^[../]");
+	private boolean isMatcherFind(final String path, final String word) {		// 상위폴더로 이동하는가?
+		Pattern pattern = Pattern.compile(word);
 		Matcher matcher = pattern.matcher(path);
 		return matcher.find();		
 	}
@@ -166,7 +188,6 @@ public class MiniDos {
 	private File getMoveParentDirectoryFile(String movePath) {
 		int lastPathIndex = getCurrentPath().lastIndexOf("\\");		// 마지막 \\을 찾는다
 		if(-1 == lastPathIndex){
-			// 파일을 찾을 수 없습니다
 			return null;
 		}
 		String tempPath = getCurrentPath();
@@ -174,7 +195,6 @@ public class MiniDos {
 		
 		File moveFile = new File(tempPath);
 		if(false == moveFile.exists()){
-			System.out.println("파일을 찾을 수 없습니다");
 			return null;
 		}
 		
