@@ -8,22 +8,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*
->ls
-=> 파일목록 출력
-
->cd kosta
-=>디렉토리 이동
-
->cd..
-=> 부모디렉토리 이동
-
->mkdir kosta
-=> 새로운 디렉토리 생성
-
->cp /home/test
-=>현재디렉토리에 /home/test에 있는 모든 파일 복사*/
-
 public class MiniDos {
 	private String currentPath;
 	private File file;
@@ -124,7 +108,6 @@ public class MiniDos {
 				copyFile(file, newFile);
 				
 			}else{
-				System.out.println("copy");
 				File newFile = new File(copy, file.getName());
 				copy(file, newFile);
 			}
@@ -136,18 +119,19 @@ public class MiniDos {
 	public void copy(File ori, File copy){
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
-		System.out.println("ori:"+ori.getPath());
-		System.out.println("copy:"+copy.getPath());
+		//System.out.println("ori:"+ori.getPath());
+		//System.out.println("copy:"+copy.getPath());
 
 		try{
 		fileInputStream = new FileInputStream(ori);
 		fileOutputStream = new FileOutputStream(copy);
+		byte[] data = new byte[50];
 		while(true){
-			int value = fileInputStream.read();
-			fileOutputStream.write(value);
-			
+			int value = fileInputStream.read(data);			
 			if(-1 == value)
 				break;
+			
+			fileOutputStream.write(data, 0, value);			// 얼마만큼 복사하는지 명시해야한다. 안그러면 파일복사가 제대로 이루어지지 않는다
 		}
 		
 		}catch(Exception e){
@@ -161,7 +145,6 @@ public class MiniDos {
 					fileOutputStream .close();
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
