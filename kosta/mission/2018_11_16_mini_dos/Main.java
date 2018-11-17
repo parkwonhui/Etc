@@ -51,7 +51,11 @@ public class Main {
 				}else if(true == firstPath.equals("cd")){
 					minidos.moveDirectory(twoPath);
 				}else if(true == firstPath.equals("mkdir")){
-					minidos.creatDirect(twoPath);
+					if(false == minidos.creatDirect(twoPath)) {
+						 System.out.println("cannot create directory"+twoPath+": No such file or directory");
+
+						
+					}
 				}else if(true == firstPath.equals("cp")){
 					minidos.copyDirectory(twoPath);
 				}else if(true == firstPath.equals("pwd")){

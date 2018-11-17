@@ -21,23 +21,19 @@ public class MiniDos {
 		file = new File(this.currentPath);
 	}
 	
-	public String getCurrentPath(){
-		return currentPath;
-	}
-	
 	// 파일목록 출력
 	public void printList(){
-		System.out.println("name\t\t\t d/f \t\t modify");
-		File[] arr = file.listFiles();
+		System.out.println("name\t\t\\t\tt d/f \t\t modify");
+		File[] arr = getCurrentFile().listFiles();
 		for(int i = 0; i < arr.length; ++i) {
-			System.out.printf("%-20s",arr[i].getName());
+			System.out.printf("%-40s",arr[i].getName());
 			if(true == arr[i].isDirectory())
 				System.out.printf("%-10s","directory");
 			else
 				System.out.printf("%-10s","file");
 
 			SimpleDateFormat sf = new SimpleDateFormat();			
-			System.out.printf("%-20s",sf.format(file.lastModified()));
+			System.out.printf("%-20s",sf.format(getCurrentFile().lastModified()));
 			System.out.println();
 		}
 	}
@@ -47,18 +43,12 @@ public class MiniDos {
 		
 		String tempMovePath = movePath;
 		while(true == isMoveParentDirectory(tempMovePath)){			 // 상위폴더 이동
-			File moveFile = getMoveParentDirectoryFile(tempMovePath);
-			if(null == moveFile)
-				return false;
-			
-			tempMovePath = removeStartPath(tempMovePath, '/');
+			tempMovePath = MoveParentDirectory(tempMovePath);
 			if(null == tempMovePath)
 				return false;
-		
-			updateCurrentFile(moveFile, moveFile.getPath());
 		}
 		
-		File file = new File(currentPath, tempMovePath);
+		File file = new File(getCurrentPath(), tempMovePath);
 		if(false == file.exists())
 			return false;
 		
@@ -68,14 +58,21 @@ public class MiniDos {
 	}
 	
 	// 새로운 디렉토리 생성
-	public boolean creatDirect(String newDirectoryName){
-		File f = new File(currentPath,newDirectoryName);
+	public boolean creatDirect(final String newDirectoryName){
+		String tempMovePath = newDirectoryName;
+		while(true == isMoveParentDirectory(tempMovePath)){			 // 상위폴더 이동
+			tempMovePath = MoveParentDirectory(tempMovePath);
+			if(null == tempMovePath)
+				return false;
+		}
+
+		File f = new File(getCurrentPath(),tempMovePath);
 		return f.mkdir();
 	}
 	
 	// 현재 디렉토리로 모든 파일 복사 하기
 	public void copyDirectory(String copyPath) throws Exception{
-		file = new File(currentPath);
+		file = new File(getCurrentPath());
 		File copyFile = new File(copyPath);
 		
 		System.out.println("copyFile:"+copyFile.getPath());
@@ -85,7 +82,7 @@ public class MiniDos {
 	
 	public void copyFile(File ori, File copy) throws Exception{
 		// 여기도 ../체크해야할듯?
-		File[] fileList = file.listFiles();
+		File[] fileList = getCurrentFile().listFiles();
 		
 		for(int i = 0; i < fileList.length; ++i){
 			file = fileList[i];
@@ -140,10 +137,24 @@ public class MiniDos {
 			}
 		}
 	}
+
 	
 	protected void updateCurrentFile(File currentFile, String path){
 		file = currentFile;
 		currentPath = path;
+	}
+	
+	private String MoveParentDirectory(String tempMovePath) {
+		File moveFile = getMoveParentDirectoryFile(tempMovePath);
+		if(null == moveFile)
+			return null;
+		
+		tempMovePath = removeStartPath(tempMovePath, '/');
+		if(null == tempMovePath)
+			return null;
+	
+		updateCurrentFile(moveFile, moveFile.getPath());
+		return tempMovePath;
 	}
 	
 	private boolean isMoveParentDirectory(final String path) {		// 상위폴더로 이동하는가?
@@ -153,14 +164,14 @@ public class MiniDos {
 	}
 	
 	private File getMoveParentDirectoryFile(String movePath) {
-		int lastPathIndex = currentPath.lastIndexOf("\\");		// 마지막 \\을 찾는다
+		int lastPathIndex = getCurrentPath().lastIndexOf("\\");		// 마지막 \\을 찾는다
 		if(-1 == lastPathIndex){
 			// 파일을 찾을 수 없습니다
 			return null;
 		}
-		String tempPath = currentPath;
-		tempPath = currentPath.substring(0, lastPathIndex);		// 마지막 폴더 자르기
-		//File moveFile = new File(tempPath, path);
+		String tempPath = getCurrentPath();
+		tempPath = getCurrentPath().substring(0, lastPathIndex);		// 마지막 폴더 자르기
+		
 		File moveFile = new File(tempPath);
 		if(false == moveFile.exists()){
 			System.out.println("파일을 찾을 수 없습니다");
@@ -177,4 +188,13 @@ public class MiniDos {
 		
 		return path.substring(index+1);
 	}
+	
+	public String getCurrentPath(){
+		return currentPath;
+	}
+	
+	public File getCurrentFile() {
+		return file;
+	}
+	
 }
