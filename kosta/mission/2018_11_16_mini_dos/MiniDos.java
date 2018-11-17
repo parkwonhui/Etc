@@ -105,7 +105,7 @@ public class MiniDos {
 		copyFile(file, copyFile);
 	}
 	
-	public void copyFile(File ori, File copy) throws Exception{
+	private void copyFile(File ori, File copy) throws Exception{
 		// 여기도 ../체크해야할듯?
 		File[] fileList = getCurrentFile().listFiles();
 		
@@ -128,7 +128,7 @@ public class MiniDos {
 		}
 	}
 	
-	public void copy(File ori, File copy){
+	private void copy(File ori, File copy){
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
 		
@@ -161,7 +161,7 @@ public class MiniDos {
 	}
 
 	
-	protected void updateCurrentFile(File currentFile, String path){
+	private void updateCurrentFile(File currentFile, String path){
 		file = currentFile;
 		currentPath = path;
 	}
