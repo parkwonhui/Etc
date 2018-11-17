@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,10 +27,19 @@ public class MiniDos {
 	
 	// 파일목록 출력
 	public void printList(){
-		System.out.println("printList:"+file);
+		System.out.println("name\t\t\t d/f \t\t modify");
 		File[] arr = file.listFiles();
-		for(int i = 0; i < arr.length; ++i)
-			System.out.println(arr[i].getName()+"\t"+arr[i].getName());
+		for(int i = 0; i < arr.length; ++i) {
+			System.out.printf("%-20s",arr[i].getName());
+			if(true == arr[i].isDirectory())
+				System.out.printf("%-10s","directory");
+			else
+				System.out.printf("%-10s","file");
+
+			SimpleDateFormat sf = new SimpleDateFormat();			
+			System.out.printf("%-20s",sf.format(file.lastModified()));
+			System.out.println();
+		}
 	}
 	
 	// 디렉토리 이동(정규표현식 써야할 듯?)
