@@ -6,21 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-/*
->ls
-=> 파일목록 출력
-
->cd kosta
-=>디렉토리 이동
-
->cd..
-=> 부모디렉토리 이동
-
->mkdir kosta
-=> 새로운 디렉토리 생성
-
->cp /home/test
-=>현재디렉토리에 /home/test에 있는 모든 파일 복사*/
 
 public class Main {
 
