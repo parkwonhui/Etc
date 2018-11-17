@@ -42,44 +42,27 @@ public class MiniDos {
 		}
 	}
 	
-	// 디렉토리 이동(정규표현식 써야할 듯?)
-	public boolean moveDirectory(String movePath){
-		Pattern pattern = Pattern.compile("^[../]");
-		Matcher matcher = pattern.matcher(movePath);
+	// 디렉토리 이동
+	public boolean moveDirectory(final String movePath){
 		
+		String tempMovePath = movePath;
+		while(true == isMoveParentDirectory(tempMovePath)){			 // 상위폴더 이동
+			File moveFile = getMoveParentDirectoryFile(tempMovePath);
+			if(null == moveFile)
+				return false;
+			
+			tempMovePath = removeStartPath(tempMovePath, '/');
+			if(null == tempMovePath)
+				return false;
 		
-		if(true == matcher.find()){ // 상위폴더 이동
-			
-			int index = movePath.indexOf("/");
-			System.out.println("index:"+index);
-			
-			String path = movePath.substring(index+1);	// 남은 위치 가져옴
-			
-			int lastPathIndex = currentPath.lastIndexOf("\\");				// 마지막 \\을 찾는다
-			if(-1 == lastPathIndex){
-				// 파일을 찾을 수 없습니다
-				return false;
-			}
-			String tempPath = currentPath;
-			tempPath = currentPath.substring(0, lastPathIndex);
-			System.out.println("tempPath:"+tempPath+" movePath:"+movePath);
-			File moveFile = new File(tempPath, path);
-			if(false == moveFile.exists()){
-				System.out.println("파일을 찾을 수 없습니다");
-				return false;
-			}
-
-			UpdateCurrentFile(moveFile, moveFile.getPath());
-			
-		}else{
-			System.out.println("else");
-
-			File file = new File(currentPath, movePath);
-			if(false == file.exists())
-				return false;
-			
-			UpdateCurrentFile(file, file.getPath());
+			updateCurrentFile(moveFile, moveFile.getPath());
 		}
+		
+		File file = new File(currentPath, tempMovePath);
+		if(false == file.exists())
+			return false;
+		
+		updateCurrentFile(file, file.getPath());
 		
 		return true;
 	}
@@ -129,9 +112,7 @@ public class MiniDos {
 	public void copy(File ori, File copy){
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
-		//System.out.println("ori:"+ori.getPath());
-		//System.out.println("copy:"+copy.getPath());
-
+		
 		try{
 		fileInputStream = new FileInputStream(ori);
 		fileOutputStream = new FileOutputStream(copy);
@@ -160,8 +141,40 @@ public class MiniDos {
 		}
 	}
 	
-	protected void UpdateCurrentFile(File currentFile, String path){
+	protected void updateCurrentFile(File currentFile, String path){
 		file = currentFile;
-		currentPath = path;		
+		currentPath = path;
+	}
+	
+	private boolean isMoveParentDirectory(final String path) {		// 상위폴더로 이동하는가?
+		Pattern pattern = Pattern.compile("^[../]");
+		Matcher matcher = pattern.matcher(path);
+		return matcher.find();		
+	}
+	
+	private File getMoveParentDirectoryFile(String movePath) {
+		int lastPathIndex = currentPath.lastIndexOf("\\");		// 마지막 \\을 찾는다
+		if(-1 == lastPathIndex){
+			// 파일을 찾을 수 없습니다
+			return null;
+		}
+		String tempPath = currentPath;
+		tempPath = currentPath.substring(0, lastPathIndex);		// 마지막 폴더 자르기
+		//File moveFile = new File(tempPath, path);
+		File moveFile = new File(tempPath);
+		if(false == moveFile.exists()){
+			System.out.println("파일을 찾을 수 없습니다");
+			return null;
+		}
+		
+		return moveFile;
+	}
+	
+	private String removeStartPath(final String path, final char findWord) {
+		int index = path.indexOf(findWord);
+		if(-1 == index)
+			return null;
+		
+		return path.substring(index+1);
 	}
 }
