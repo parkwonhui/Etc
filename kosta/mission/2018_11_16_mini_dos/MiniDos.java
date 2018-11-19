@@ -100,14 +100,13 @@ public class MiniDos {
 		}else {
 			copyFile = new File(moveFile, tempMovePath);	// 절대 경로가 아닌 현재 폴더 위치에서 찾음
 		}	
-			
+		
 		copyFile.mkdir();
 		copyFile(file, copyFile);
 	}
 	
 	private void copyFile(File ori, File copy) throws Exception{
-		// 여기도 ../체크해야할듯?
-		File[] fileList = getCurrentFile().listFiles();
+		File[] fileList = ori.listFiles();
 		
 		File tempfile = null;
 		for(int i = 0; i < fileList.length; ++i){
@@ -119,6 +118,7 @@ public class MiniDos {
 					throw new Exception("아 에러남;");
 				}
 				
+				//System.out.println("tempFile:"+tempfile.getPath()+" newFile:"+newFile.getPath());	
 				copyFile(tempfile, newFile);
 				
 			}else{
