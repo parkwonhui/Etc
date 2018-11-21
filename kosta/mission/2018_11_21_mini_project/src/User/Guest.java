@@ -10,9 +10,13 @@ public class Guest extends User{
 	}
 
 	@Override
-	public LOGIN_STATE loginLogout() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean login() {
+		return true;
+	}
+
+	@Override
+	public boolean logout() {
+		return false;	
 	}
 
 	@Override

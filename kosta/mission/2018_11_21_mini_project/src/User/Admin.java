@@ -9,9 +9,13 @@ public class Admin extends User{
 	}
 
 	@Override
-	public LOGIN_STATE loginLogout() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean login() {
+		return false;
+	}
+
+	@Override
+	public boolean logout() {
+		return true;	
 	}
 
 	@Override

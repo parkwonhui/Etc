@@ -4,7 +4,8 @@ public abstract  class User {
 	public enum INPUT_TYPE{
 		
 		MAIN_CATEGORY, 		// 메뉴고르기, 매장관리
-		LOGIN_LOGOUT,		// Logint/Logout
+		LOGIN,				// Login
+		LOGOUT,				// Logout
 		MY_MENU,			// 마이메뉴
 		MY_MENU_MODIFY,		// 마이메뉴 수정
 		ADMIN_MENU_ADD,		// 메뉴 추가
@@ -20,7 +21,8 @@ public abstract  class User {
 	};
 	
 	public abstract INPUT_TYPE mainMenu();
-	public abstract LOGIN_STATE loginLogout();		// 결과값으로 로그아웃되면 manager roop를 벗어난다
+	public abstract boolean login();
+	public abstract boolean logout();		// 결과값으로 로그아웃되면 manager roop를 벗어난다
 	public abstract void myMenuPrint();
 	public abstract void myMenuModify();
 	public abstract void adminMenuAdd();

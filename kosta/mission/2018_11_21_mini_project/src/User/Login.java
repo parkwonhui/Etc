@@ -1,7 +1,11 @@
 package User;
 
 public class Login extends User {
-
+	
+	// 마이메뉴
+	private Menu myMenu;		// set,get 함수 추가할 것!!
+	
+	
 	@Override
 	public INPUT_TYPE mainMenu() {
 		System.out.println("[메장관리] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.로그아웃");
@@ -10,11 +14,15 @@ public class Login extends User {
 	}
 
 	@Override
-	public LOGIN_STATE loginLogout() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean login() {
+		return false;
 	}
 
+	@Override
+	public boolean logout() {
+		return true;	
+	}
+	
 	@Override
 	public void myMenuPrint() {
 		// TODO Auto-generated method stub
