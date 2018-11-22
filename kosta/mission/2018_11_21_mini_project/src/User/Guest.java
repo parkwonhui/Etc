@@ -1,5 +1,7 @@
 package User;
 
+import java.nio.channels.ScatteringByteChannel;
+
 import CafeManagement.Manager;
 import Info.InfoManager;
 import Menu.Coffee;
@@ -14,8 +16,7 @@ public class Guest extends User{
 	@Override
 	public INPUT_TYPE mainMenu()  throws Exception{
 		System.out.println("[손님모드/메뉴] 1.음료 2.시즌메뉴 3.디저트 4.계산 5.로그인");
-		int value = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.MENU_COFFEE;
 			case 2 : return User.INPUT_TYPE.MENU_SEASON;
@@ -77,7 +78,7 @@ public class Guest extends User{
 	public void adminMenuCount()  throws Exception{}
 	public void viewMenu() throws Exception{}
 
-	public int inputMenu(int menutype){
+	public int inputMenu(int menutype) throws Exception{
 		// TODO: 시간될 때 분류별로 체크해서 출력하는 코드 추가할 것
 		if(Menu.MENUTYPE_COFFEE == menutype)
 			System.out.println("[커피] 0.아메리카노 1.카페라떼 2.카페모카");
@@ -88,8 +89,7 @@ public class Guest extends User{
 		else
 			return -1;
 	
-		int index = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int index = ScannerManager.ReadInt();
 		
 		// 범위 체크
 		if(Menu.MENUTYPE_COFFEE == menutype && index >= 3) return -1;
@@ -107,20 +107,13 @@ public class Guest extends User{
 		boolean bSyrup			= false;	// 시럽
 
 		System.out.println("[옵션추가] 사이즈 업?(0:No 1:Yes)");
-		bSizeup = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
-
+		bSizeup = (1 == ScannerManager.ReadInt() ? true:false);
 		System.out.println("[옵션추가] 샷추가?(0:No 1:Yes)");
-		bAddShot = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
-
+		bAddShot = (1 == ScannerManager.ReadInt() ? true:false);
 		System.out.println("[옵션추가] 휘핑추가?(0:No 1:Yes)");
-		bWhippedCream = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
-
+		bWhippedCream = (1 == ScannerManager.ReadInt() ? true:false);
 		System.out.println("[옵션추가] 시럽추가?(0:No 1:Yes)");
-		bSyrup = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
+		bSyrup = (1 == ScannerManager.ReadInt() ? true:false);
 		
 		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
 	}

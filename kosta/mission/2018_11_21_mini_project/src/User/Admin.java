@@ -1,5 +1,8 @@
 package User;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import CafeManagement.Manager;
 import Info.InfoManager;
 import Info.UserInfo;
@@ -20,8 +23,7 @@ public class Admin extends User{
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception{
 		System.out.println("[관리자모드/매장관리] 1.메뉴추가 2.메뉴수정 3.메뉴삭제 4.회원검색 5.재고관리 6.메뉴보기 7.로그아웃");
-		int value = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.ADMIN_MENU_ADD;
 			case 2 : return User.INPUT_TYPE.ADMIN_MENU_MODIFY;
@@ -61,17 +63,14 @@ public class Admin extends User{
 	@Override
 	public void adminMenuAdd() throws Exception{
 		 System.out.println("메뉴 이름 :");
-		 String name = ScannerManager.sc.nextLine();
+		 String name = ScannerManager.ReadString();
 		 System.out.println("메뉴 가격 :");
-		 int price = ScannerManager.sc.nextInt();
-		 ScannerManager.sc.nextLine();
+		 int price = ScannerManager.ReadInt();
 		 System.out.println("메뉴 할인(90%할인일 시 90):");
-		 int discount = ScannerManager.sc.nextInt();
-		 ScannerManager.sc.nextLine();
+		 int discount = ScannerManager.ReadInt();
 		 System.out.println("메뉴 타입 (0:음료 1:시즌 2:디저트):");
-		 int type = ScannerManager.sc.nextInt();
-		 
-		 int index =  InfoManager.getInst().getMenuDataSize() - 1;		 
+		 int type = ScannerManager.ReadInt();
+		 int index =  InfoManager.getInst().getMenuDataSize();		 
 		 InfoManager.getInst().addMenu(index, name, price, discount, type);
 		 
 		 System.out.println("[system]메뉴가 추가되었습니다");
@@ -79,42 +78,37 @@ public class Admin extends User{
 
 	@Override
 	public void adminMenuModify() throws Exception{
-		InfoManager.getInst().allPrint();
 		System.out.println("수정할 메뉴 index를 입력해주세요");
-		int index = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		InfoManager.getInst().allPrint();
+		int index = ScannerManager.ReadInt();
 
 		Menu menu = InfoManager.getInst().searchMenu(index);
 		
 		System.out.println("이름 입력");
-		String name = ScannerManager.sc.nextLine();
+		String name = ScannerManager.ReadString();
 		System.out.println("가격 입력");
-		int price  = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int price  = ScannerManager.ReadInt();
 		int discount = 100;
-		if(menu instanceof Dessert){
+		if(Menu.MENUTYPE_DESSERT == menu.getType()){
 			System.out.println("할인율 입력");
-			discount  = ScannerManager.sc.nextInt();
-			ScannerManager.sc.nextLine();
+			discount  = ScannerManager.ReadInt();
 		}
-		int type  = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		System.out.println("타입 입력");		
+		int type  = ScannerManager.ReadInt();
 		
-		menu.modifyMenuInfo(name, price, type);
+		menu.modifyMenuInfo(menu.getName(), price, type);
 
-		if(menu instanceof Dessert) {
+		if(Menu.MENUTYPE_DESSERT == menu.getType()){
 			Dessert dessert = (Dessert)menu;
 			dessert.setDiscount(discount);
 		}
-			
 	}
 
 	@Override
 	public void adminMenuDelete() throws Exception{
 		InfoManager.getInst().allPrint();
 		System.out.println("삭제할 메뉴 index를 입력해주세요");
-		int index  = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int index = ScannerManager.ReadInt();
 		
 		InfoManager.getInst().deleteMenu(index);
 	}
@@ -122,7 +116,7 @@ public class Admin extends User{
 	@Override
 	public void adminUserSearch() throws Exception{
 		System.out.println("유저의 id를 입력해주세요");
-		String name = ScannerManager.sc.nextLine();
+		String name = ScannerManager.ReadString();
 		
 		// 유저가 좋아하는 메뉴를 출력하기 위해 user+userInfo를 합쳐야 한다
 		//UserInfo = InfoManager.getInst().searchUser(name);

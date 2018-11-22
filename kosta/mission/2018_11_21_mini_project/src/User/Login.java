@@ -30,8 +30,7 @@ public class Login extends User {
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception {
 		System.out.println("[유저모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.결제 7.로그아웃");
-		int value = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.MENU_COFFEE;
 			case 2 : return User.INPUT_TYPE.MENU_SEASON;
@@ -90,8 +89,7 @@ public class Login extends User {
 		else
 			return -1;
 	
-		int index = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int index = ScannerManager.ReadInt();
 		
 		// 범위 체크
 		if(Menu.MENUTYPE_COFFEE == menutype && index >= 3) return -1;
@@ -120,8 +118,7 @@ public class Login extends User {
 			}
 		}
 		
-		int index = ScannerManager.sc.nextInt();
-		ScannerManager.sc.nextLine();
+		int index = ScannerManager.ReadInt();
 		
 		Menu newMyMenu = InfoManager.getInst().searchMenu(index);
 		if(null == newMyMenu){
@@ -151,20 +148,16 @@ public class Login extends User {
 		boolean bSyrup			= false;	// 시럽
 
 		System.out.println("[옵션추가] 사이즈 업?(0:No 1:Yes)");
-		bSizeup = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
+		bSizeup = (1 == ScannerManager.ReadInt() ? true:false);
 
 		System.out.println("[옵션추가] 샷추가?(0:No 1:Yes)");
-		bAddShot = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
+		bAddShot = (1 == ScannerManager.ReadInt() ? true:false);
 
 		System.out.println("[옵션추가] 휘핑추가?(0:No 1:Yes)");
-		bWhippedCream = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
-
+		bWhippedCream = (1 == ScannerManager.ReadInt() ? true:false);
+		
 		System.out.println("[옵션추가] 시럽추가?(0:No 1:Yes)");
-		bSyrup = (1 == ScannerManager.sc.nextInt() ? true:false);
-		ScannerManager.sc.nextLine();
+		bSyrup = (1 == ScannerManager.ReadInt() ? true:false);
 		
 		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
 	}
