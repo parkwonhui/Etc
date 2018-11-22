@@ -22,7 +22,7 @@ public class Admin extends User{
 
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception{
-		System.out.println("[관리자모드/매장관리] 1.메뉴추가 2.메뉴수정 3.메뉴삭제 4.회원검색 5.재고관리 6.메뉴보기 7.로그아웃");
+		System.out.println("[관리자모드/매장관리] 1.메뉴추가 2.메뉴수정 3.메뉴삭제 4.회원검색 5.재고관리 6.매출 7.로그아웃");
 		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.ADMIN_MENU_ADD;
@@ -66,10 +66,14 @@ public class Admin extends User{
 		 String name = ScannerManager.ReadString();
 		 System.out.println("메뉴 가격 :");
 		 int price = ScannerManager.ReadInt();
-		 System.out.println("메뉴 할인(90%할인일 시 90):");
-		 int discount = ScannerManager.ReadInt();
 		 System.out.println("메뉴 타입 (0:음료 1:시즌 2:디저트):");
 		 int type = ScannerManager.ReadInt();
+		 int discount = 100;
+		 if(Menu.MENUTYPE_DESSERT == type) {
+			 System.out.println("메뉴 할인(90%할인일 시 90):");
+		 	 discount = ScannerManager.ReadInt();
+		 }
+		 
 		 int index =  InfoManager.getInst().getMenuDataSize();		 
 		 InfoManager.getInst().addMenu(index, name, price, discount, type);
 		 
