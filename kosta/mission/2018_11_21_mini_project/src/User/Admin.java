@@ -5,6 +5,8 @@ import ScannerManager.ScannerManager;
 import User.User.INPUT_TYPE;
 
 public class Admin extends User{
+	
+	public Admin(){}
 
 	@Override
 	public INPUT_TYPE mainMenu() {

@@ -8,6 +8,8 @@ import ScannerManager.ScannerManager;
 
 public class Guest extends User{
 
+	public Guest(){}
+	
 	@Override
 	public INPUT_TYPE mainMenu() {
 		System.out.println("[손님모드/메뉴] 1.음료 2.시즌메뉴 3.디저트 4.계산 5.로그인");

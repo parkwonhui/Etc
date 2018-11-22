@@ -1,6 +1,11 @@
 package User;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import CafeManagement.Manager;
+import Menu.Coffee;
+import Menu.Dessert;
 import Menu.Menu;
 import ScannerManager.ScannerManager;
 import User.User.INPUT_TYPE;
@@ -8,10 +13,10 @@ import User.User.INPUT_TYPE;
 public class Login extends User {
 	
 	// 마이메뉴
-	private Menu myMenu;		// set,get 함수 추가할 것!!
+	private Menu myMenu;
 	
-	public Login(Menu menu){
-		myMenu = menu;
+	public Login(){
+		myMenu = null;
 	}
 	
 	public void SetMyMenu(Menu menu){
@@ -47,66 +52,110 @@ public class Login extends User {
 
 	@Override	
 	public Menu menuChoice(int menutype){
+		Menu fineMenu = null;
+		int choiceCategory = inputMenu(menutype);
+		if(-1 == choiceCategory){
+			return null;
+		}
+
+		Menu findMenu = Manager.menuList.get(choiceCategory);
+		Menu newMenu = null;
+		// 생성 정리해야할듯..(팩토리매니저만들까?)
+		if(Menu.MENUTYPE_COFFEE == findMenu.getType()||
+				Menu.MENUTYPE_SEASON == findMenu.getType()){
+			newMenu = new Coffee(findMenu.getIndex(), findMenu.getName(), findMenu.getStockNum(), findMenu.getPrice(), findMenu.getType());
+			addOption((Coffee)newMenu);
+	
+		}else if(Menu.MENUTYPE_DESSERT == findMenu.getType()){
+			Dessert findMenutoDessert = (Dessert)findMenu;
+			newMenu = new Dessert(findMenu.getIndex(), findMenu.getName(), findMenu.getStockNum(), findMenu.getPrice(), findMenu.getType(), findMenutoDessert.getDiscount());
+		}
+		
+		return newMenu;
+	}
+	
+	public int inputMenu(int menutype){
 		// TODO: 시간될 때 분류별로 체크해서 출력하는 코드 추가할 것
-		// 재고 출력 
 		if(Menu.MENUTYPE_COFFEE == menutype)
 			System.out.println("[커피] 0.아메리카노 1.카페라떼 2.카페모카");
-		else if(Menu.MENUTYPE_SEASON== menutype)
+		else if(Menu.MENUTYPE_SEASON == menutype)
 			System.out.println("[시즌] 3.시즌");	
-		else if(Menu.MENUTYPE_SEASON== menutype)
+		else if(Menu.MENUTYPE_DESSERT == menutype)
 			System.out.println("[디저트] 4.치즈케이크 5.모카케이크 6.마카롱");
 		else
-			return null;
-			
+			return -1;
+	
 		int index = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		
-		Menu findMenu = Manager.menuList.get(index);	
-		
-		return findMenu;
+		return index;
 	}
 	
 	@Override
 	public void myMenuPrint() {
-		System.out.println("myMenu 이름:"+myMenu.getName()+"\n가격:"+myMenu.getPrice()+"\n타입:"+myMenu.getType());
+		if(null == myMenu)
+			System.out.println("myMenu가 없습니다");
+		else
+			System.out.println("myMenu 이름:"+myMenu.getName()+"\n가격:"+myMenu.getPrice());
 	}
 
 	@Override
 	public void myMenuModify() {
-		System.out.println("1.에스프레소 2. 아메리카노 3.카페라떼 4.카푸치노"
-				+ "5.카페모카 6.카라멜마끼야또 7.산타푸치노 8.루돌프라페");
-		ScannerManager.sc.nextInt();
+		System.out.println("MyMenu를 선택하세요(숫자입력)");
+		Map<Integer, Menu> menuList = Manager.menuList;
+		for(int i = 0; i < Manager.menuList.size(); ++i){
+			Menu menu = menuList.get(i);
+			if(menu instanceof Coffee){
+				System.out.println(menu.getIndex()+"."+menu.getName());
+			}
+		}
 		
+		int index = ScannerManager.sc.nextInt();
+		ScannerManager.sc.nextLine();
+		
+		Menu newMyMenu = menuList.get(index);
+		if(null == newMyMenu){
+			System.out.println("잘못된 index 입니다");
+		}else{
+			System.out.println("새로운 MyMenu"+newMyMenu.getName()+"를 등록했습니다");
+			SetMyMenu(newMyMenu);
+		}
 	}
 
 	@Override
-	public void adminMenuAdd() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void adminMenuAdd() {}
 	@Override
-	public void adminMenuModify() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void adminMenuModify() {}
 	@Override
-	public void adminMenuDelete() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void adminMenuDelete() {}
 	@Override
-	public void adminMenuSearch() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void adminMenuSearch() {}
 	@Override
-	public void adminMenuCount() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void adminMenuCount() {}
 
+	public void addOption(Coffee coffee){
+		System.out.println("[옵션추가]옵션추가를 원하시면 1 원치 않으면 0을 눌러주세요");
+		boolean bSizeup 		= false; 	// 사이즈업
+		boolean bAddShot	 	= false; 	// 샷추가
+		boolean bWhippedCream	= false;	// 휘핑추가
+		boolean bSyrup			= false;	// 시럽
+
+		System.out.println("[옵션추가] 사이즈 업?(0:No 1:Yes)");
+		bSizeup = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+
+		System.out.println("[옵션추가] 샷추가?(0:No 1:Yes)");
+		bAddShot = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+
+		System.out.println("[옵션추가] 휘핑추가?(0:No 1:Yes)");
+		bWhippedCream = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+
+		System.out.println("[옵션추가] 시럽추가?(0:No 1:Yes)");
+		bSyrup = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+		
+		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
+	}
 }

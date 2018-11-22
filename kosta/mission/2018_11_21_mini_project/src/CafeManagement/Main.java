@@ -1,6 +1,7 @@
 package CafeManagement;
 
 import User.Guest;
+import User.Login;
 import User.User;
 
 public class Main {
@@ -8,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		Manager manager = new Manager();
-		User user = new Guest();
+		User user = new Login();
 		manager.start(user);
 	}
 
