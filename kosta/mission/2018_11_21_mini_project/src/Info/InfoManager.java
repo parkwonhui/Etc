@@ -75,14 +75,16 @@ public class InfoManager {
 
 	// 재고출력
 	public void PrintStock() {
-		int size = menuinfo.size();
-		for (int i = 0; i < size; ++i) {
-			Menu menu = menuinfo.get(i);
-			System.out.println(i + ": " + menu.getName() + " 재고:" + menu.getStockNum());
+		Set set = menuinfo.entrySet();
+		Iterator iter = set.iterator();
+		while(iter.hasNext()) {
+			Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>)iter.next();
+			Menu menu = temp.getValue();
+			System.out.println(menu.getIndex() + ": " + menu.getName() + " 재고:" + menu.getStockNum());	
 		}
 	}
 
-	public void printCoffee(){
+	/*public void printCoffee(){
 		int size = menuinfo.size();
 		for (int i = 0; i < size; ++i) {
 			Menu menu = menuinfo.get(i);
@@ -102,13 +104,15 @@ public class InfoManager {
 			
 			System.out.println(i + ": " + menu.getName() + " 재고:" + menu.getStockNum());
 		}
-	}
+	}*/
 	
 	public void allPrint(){
-		int size = menuinfo.size();
-		for (int i = 0; i < size; ++i) {
-			Menu menu = menuinfo.get(i);
-			System.out.println(i + ": " + menu.getName() + " 재고:" + menu.getStockNum());
+		Set set = menuinfo.entrySet();
+		Iterator iter = set.iterator();
+		while(iter.hasNext()) {
+			Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>)iter.next();
+			Menu menu = temp.getValue();
+			System.out.println(menu.getIndex() + ": " + menu.getName() + " 재고:" + menu.getStockNum());		
 		}
 	}
 
