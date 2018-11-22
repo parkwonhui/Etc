@@ -134,6 +134,7 @@ public class Manager {
 			break;
 		case MENU_VIEW:
 			user.viewMenu();
+			System.out.println("총 매출:"+getTotalMoney());
 			break;
 		default:
 			break;
