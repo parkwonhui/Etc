@@ -9,8 +9,8 @@ public class Coffee extends Menu implements DiscountPercent{
 
 	public Coffee() {}
 
-	public Coffee(int index, String name, int inventoryCount, int price, boolean season) {
-		super(index, name, inventoryCount, price, season);
+	public Coffee(int index, String name, int inventoryCount, int price, int type) {
+		super(index, name, inventoryCount, price, type);
 		this.bSizeup = false;
 		this.bAddShot = false;
 		this.bWhippedCream = false;

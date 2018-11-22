@@ -1,7 +1,9 @@
 package CafeManagement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Menu.Coffee;
 import Menu.Menu;
@@ -9,26 +11,29 @@ import Menu.NonCoffee;
 import User.User;
 import User.User.INPUT_TYPE;
 import Menu.Dessert;
+import Save.SaveManager;
 
 public class Manager {
 	
-	// info가 있다고 치고.. 임시 메뉴를 만든다
-	List<Menu> menuList = new ArrayList<Menu>();
+	// 장바구니
+	private SaveManager saveManager;
+	private int	totalMoney;		// 총 판매 금액
 	
-	User user;
+	// info가 있다고 치고.. 임시 메뉴를 만든다
+	static public Map<Integer, Menu> menuList = new HashMap<Integer, Menu>();
+	static{
+		menuList.put(0, new Coffee(0, "아메리카노", 10, 4000, Menu.MENUTYPE_COFFEE));
+		menuList.put(1, new Coffee(1, "카페라떼", 10, 4500, Menu.MENUTYPE_COFFEE));
+		menuList.put(2, new Coffee(2, "카페모카", 10, 5000, Menu.MENUTYPE_COFFEE));
+		menuList.put(3, new Coffee(3, "산타푸치노", 10, 5200, Menu.MENUTYPE_SEASON));
+		menuList.put(4, new Coffee(4, "치즈케이크", 10, 4500, Menu.MENUTYPE_DESSERT));
+		menuList.put(5, new Coffee(5, "모카케이크", 10, 4800, Menu.MENUTYPE_DESSERT));		
+		menuList.put(6, new Coffee(6, "마카롱", 10, 1000, Menu.MENUTYPE_DESSERT));
+	}
 	
 	public Manager() {
-		menuList.add(new Coffee(0, "아메리카노", 10, 1000, false));
-		menuList.add(new Coffee(1, "카페라떼", 10, 1500, false));
-		menuList.add(new Coffee(2, "카라멜마끼아또", 10, 3000, false));
-		menuList.add(new Coffee(3, "바닐라프라페자바칩", 10, 4500, true));
-
-		menuList.add(new Coffee(4, "홍차", 10, 3000, false));
-		menuList.add(new Coffee(5, "오렌지쥬스", 10, 3000, true));
-		
-		menuList.add(new Coffee(6, "케이크", 10, 5000, false));
-		menuList.add(new Coffee(7, "샌드위치", 10, 3000, false));
-		menuList.add(new Coffee(6, "마카롱", 10, 2000, false));
+		saveManager = new SaveManager();
+		totalMoney = 0;
 	}
 	
 	// 메뉴입력을 받음, 로그인 성공 시 로그인 클래스에서 유저를 생성하고 넘겨줌
@@ -43,7 +48,6 @@ public class Manager {
 			
 			exec(user, inputType);  								// 로그인 외에 메뉴실행
 			
-			
 		}
 	}
 	
@@ -54,13 +58,49 @@ public class Manager {
 		return user.logout();
 	}
 	
+	// 여기선 전부 false를 리턴해야한다. return값이 true면 while문을 빠져나가기 때문이다
 	public boolean exec(final User user, final INPUT_TYPE inputType) {
 		// 메뉴가 너무 많아..
 		switch(inputType) {
 		case LOGOUT :
-			return user.login();			// info 정보 참조해서 로그인한다
+			return user.login();					// info 정보 참조해서 로그인한다
+		case MENU_COFFEE :
+		case MENU_SEASON :
+		case MENU_DESSERT :
+
+			int menutype = Menu.MENUTYPE_COFFEE;
+			if(User.INPUT_TYPE.MENU_SEASON ==inputType) menutype = Menu.MENUTYPE_SEASON;
+			if(User.INPUT_TYPE.MENU_DESSERT == inputType) menutype = Menu.MENUTYPE_DESSERT;
+			
+			Menu menu =user.menuChoice(menutype);	// 커피메뉴(논커피도 있지만 일단 네임을 이렇게 만든다)
+			
+			// 메뉴 갯수 체크
+			if(0 >= menu.getStockNum()){
+				System.out.println("[System] 재고가 남지 않았습니다");
+				return false;				
+			}
+			
+			// 장바구니 최대 개수 체크
+			if(true == saveManager.isFull()){
+				System.out.println("[System] 최대 담을 수 있는 개수"+saveManager.MAX_SAVE+"를 넘었습니다");
+				return false;
+			}
+			// 구매성공이므로
+
+			// 금액을 올려주고
+			addTotalMoney(menu.getPrice());
+			
+			// 수량을 뺀다
+			menu.minusOneStockNum();
+
+			// 장바구니에 넣는다
+			saveManager.saveMenu(menu);
+			System.out.println("[Success]구매완료");
+			saveManager.allSavePrint();
+
+			break;
 		case MY_MENU :
-			user.myMenuPrint();				// 그냥 출력하고 다시 메뉴로 돌아오기
+			user.myMenuPrint();				// 선택하고 장바구니까지 가지
 			break;
 		case MY_MENU_MODIFY :	
 			user.myMenuModify();			// 메뉴 수정 입력 완료 후 다시 카테고리로 돌아가기
@@ -69,16 +109,32 @@ public class Manager {
 			user.adminMenuAdd();			// 관리자의 카페 메뉴 추가
 			break;
 		case ADMIN_MENU_MODIFY :
+			user.adminMenuModify();
 			break;
 		case ADMIN_MENU_DELETE :
+			user.adminMenuDelete();
 			break;
 		case ADMIN_MENU_SEARCH :
+			user.adminMenuSearch();
 			break;
 		case ADMIN_MENU_COUNT :
+			user.adminMenuCount();
+			break;
+		default:
 			break;
 		}
 
 		
 		return false;
 	}
+	
+	private void addTotalMoney(int money){
+		totalMoney+=money;
+	}
+	
+	private int gddTotalMoney(){
+		return totalMoney;
+	}
+	
+	
 }

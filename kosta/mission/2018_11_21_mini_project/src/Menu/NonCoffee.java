@@ -3,8 +3,8 @@ package Menu;
 public class NonCoffee extends Menu implements DiscountPercent {
 
 	public NonCoffee() {}
-	public NonCoffee(int index, String name, int inventoryCount, int price, boolean season) {
-		super(index, name, inventoryCount, price, season);
+	public NonCoffee(int index, String name, int inventoryCount, int price, int type) {
+		super(index, name, inventoryCount, price, type);
 		// TODO Auto-generated constructor stub
 	}
 
