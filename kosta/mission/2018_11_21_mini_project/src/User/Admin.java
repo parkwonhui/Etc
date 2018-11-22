@@ -16,8 +16,9 @@ public class Admin extends User{
 	
 	private UserInfo userInfo;
 	
-	public Admin(){
+	public Admin(UserInfo userInfo){
 		userInfo = null;
+		this.userInfo = userInfo;
 	}
 
 	@Override

@@ -27,6 +27,10 @@ public abstract  class User {
 		LOGIN,				// LoginLogout 함수에서 쓰이는 로그인, 로그아웃 결과
 		LOGOUT,
 	};
+
+	public static final int TYPE_LOGIN = 0;
+	public static final int TYPE_ADMIN = 1;
+
 	
 	public abstract INPUT_TYPE mainMenu() throws Exception;
 	public abstract boolean login() throws Exception;

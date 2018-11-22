@@ -19,8 +19,9 @@ public class Login extends User {
 	private UserInfo userInfo;
 	
 	
-	public Login(){
+	public Login(UserInfo user){
 		myMenu = null;
+		this.userInfo = user;
 	}
 	
 	public void SetMyMenu(Menu menu) throws Exception{

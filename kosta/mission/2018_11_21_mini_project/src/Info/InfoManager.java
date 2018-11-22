@@ -8,10 +8,13 @@ import java.util.*;
 import Menu.Coffee;
 import Menu.Dessert;
 import Menu.Menu;
+import User.Admin;
+import User.Login;
+import User.User;
 
 public class InfoManager {
 
-	HashMap<String, UserInfo> userinfo = new HashMap<>();
+	HashMap<String, User> userinfo = new HashMap<>();
 	HashMap<Integer, Menu> menuinfo = new HashMap<>();
 
 	private static InfoManager instance;
@@ -25,9 +28,12 @@ public class InfoManager {
 		return instance;
 	}
 
-	public void addUserInfo(String id, String pass) {
+	public void addUserInfo(String id, String pass, int type) {
 		UserInfo user = new UserInfo(id, pass);
-		userinfo.put(id, user);
+		if(User.TYPE_ADMIN == type)
+			userinfo.put(id, new Admin(user));
+		else
+			userinfo.put(id, new Login(user));		
 	}
 
 	public void addMenu(int index, String name, int price, int discount, int type) {
@@ -41,7 +47,7 @@ public class InfoManager {
 			menuinfo.put(index, menu);
 	}
 
-	public UserInfo searchUser(String id) {
+	public User searchUser(String id) {
 		if (false == userinfo.containsKey(id))
 			return null;
 
@@ -112,7 +118,7 @@ public class InfoManager {
 		while(iter.hasNext()) {
 			Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>)iter.next();
 			Menu menu = temp.getValue();
-			System.out.println(menu.getIndex() + ": " + menu.getName() + " 재고:" + menu.getStockNum());		
+			System.out.println(menu.getIndex() + ": " + menu.getName() + " 가격:" + menu.getPrice());		
 		}
 	}
 
@@ -129,7 +135,8 @@ public class InfoManager {
 				List<String> tmpList = new ArrayList<String>();
 				String array[] = line.split(",");
 				tmpList = Arrays.asList(array);
-				addUserInfo(array[1], array[2]);
+				int type = Integer.parseInt(array[3]);
+				addUserInfo(array[1], array[2], type);
 
 			}
 		} catch (FileNotFoundException e) {
