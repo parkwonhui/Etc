@@ -36,6 +36,6 @@ public abstract  class User {
 	public abstract void adminMenuAdd() throws Exception;
 	public abstract void adminMenuModify() throws Exception;
 	public abstract void adminMenuDelete() throws Exception;
-	public abstract void adminMenuSearch() throws Exception;
+	public abstract void adminUserSearch() throws Exception;
 	public abstract void adminMenuCount() throws Exception;
 }

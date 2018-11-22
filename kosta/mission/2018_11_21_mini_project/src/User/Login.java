@@ -135,7 +135,7 @@ public class Login extends User {
 	@Override
 	public void adminMenuDelete() throws Exception {}
 	@Override
-	public void adminMenuSearch()  throws Exception{}
+	public void adminUserSearch()  throws Exception{}
 	@Override
 	public void adminMenuCount()  throws Exception{}
 
