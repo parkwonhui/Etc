@@ -45,10 +45,11 @@ public class Menu{
 	}
 	
 	public boolean minusOneStockNum(){
-		if(0 >= stockNum)
+		if(0 >= stockNum) {
 			return false;
-		
-		--stockNum;
+		}
+		stockNum = stockNum - 1;
+
 		return true;
 	}
 }

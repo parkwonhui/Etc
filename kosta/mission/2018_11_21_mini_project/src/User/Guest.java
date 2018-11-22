@@ -43,6 +43,9 @@ public class Guest extends User{
 		}
 
 		Menu findMenu = InfoManager.getInst().searchMenu(choiceCategory);
+		if(null == findMenu)
+			return null;
+		
 		Menu newMenu = null;
 		// 생성 정리해야할듯..(팩토리매니저만들까?)
 		if(Menu.MENUTYPE_COFFEE == findMenu.getType()||
