@@ -26,9 +26,9 @@ public class Manager {
 		menuList.put(1, new Coffee(1, "카페라떼", 10, 4500, Menu.MENUTYPE_COFFEE));
 		menuList.put(2, new Coffee(2, "카페모카", 10, 5000, Menu.MENUTYPE_COFFEE));
 		menuList.put(3, new Coffee(3, "산타푸치노", 10, 5200, Menu.MENUTYPE_SEASON));
-		menuList.put(4, new Coffee(4, "치즈케이크", 10, 4500, Menu.MENUTYPE_DESSERT));
-		menuList.put(5, new Coffee(5, "모카케이크", 10, 4800, Menu.MENUTYPE_DESSERT));		
-		menuList.put(6, new Coffee(6, "마카롱", 10, 1000, Menu.MENUTYPE_DESSERT));
+		menuList.put(4, new Dessert(4, "치즈케이크", 10, 4500, Menu.MENUTYPE_DESSERT, 90));
+		menuList.put(5, new Dessert(5, "모카케이크", 10, 4800, Menu.MENUTYPE_DESSERT, 90));		
+		menuList.put(6, new Dessert(6, "마카롱", 10, 1000, Menu.MENUTYPE_DESSERT, 100));
 	}
 	
 	public Manager() {
@@ -73,6 +73,10 @@ public class Manager {
 			if(User.INPUT_TYPE.MENU_DESSERT == inputType) menutype = Menu.MENUTYPE_DESSERT;
 			
 			Menu menu =user.menuChoice(menutype);	// 커피메뉴(논커피도 있지만 일단 네임을 이렇게 만든다)
+			if(null == menu){
+				System.out.println("[System] error");
+				return false;
+			}
 			
 			// 메뉴 갯수 체크
 			if(0 >= menu.getStockNum()){
@@ -96,7 +100,11 @@ public class Manager {
 			// 장바구니에 넣는다
 			saveManager.saveMenu(menu);
 			System.out.println("[Success]구매완료");
-			saveManager.allSavePrint();
+			saveManager.allPrint();
+			break;
+		case MENU_PAY:
+			saveManager.calAllMenu();   // 전체 계산
+			saveManager.deleteAllMenu();// 출력 후 초기화
 
 			break;
 		case MY_MENU :
