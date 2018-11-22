@@ -51,7 +51,6 @@ public class Manager {
 				exec(user, inputType); // 로그인 외에 메뉴실행
 			} catch (Exception e) {
 				System.out.println("잘못된 값을 입력하였습니다");
-				ScannerManager.sc.nextLine();
 			}
 		}
 	}
@@ -140,6 +139,8 @@ public class Manager {
 			break;
 		}
 		}catch(Exception e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 			System.out.println("잘못된 값을 입력하였습니다");
 		}
 		
