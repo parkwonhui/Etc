@@ -17,10 +17,6 @@ public class Main {
 
 
 		DataInit();					// 데이터 초기화
-
-		//Manager manager = new Manager();
-		//User user = new Admin();
-		//manager.start(user);
 		
 		LoginManager loginManager = new LoginManager();
 		loginManager.login();

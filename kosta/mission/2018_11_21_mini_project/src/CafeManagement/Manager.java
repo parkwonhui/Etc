@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Info.InfoManager;
 import Menu.Coffee;
 import Menu.Menu;
 import Menu.NonCoffee;
@@ -92,8 +93,13 @@ public class Manager {
 			// 금액을 올려주고
 			addTotalMoney(menu.getPrice());
 			
+			Menu findMenu = InfoManager.getInst().searchMenu(menu.getIndex());
+			if(null == findMenu) {
+				return false;
+			}
+			
 			// 수량을 뺀다
-			menu.minusOneStockNum();
+			findMenu.minusOneStockNum();
 
 			// 장바구니에 넣는다
 			saveManager.saveMenu(menu);
