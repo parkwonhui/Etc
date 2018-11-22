@@ -26,38 +26,22 @@ public class Coffee extends Menu implements DiscountPercent{
 		return bSizeup;
 	}
 
-
-	public void setbSizeup(boolean bSizeup) {
-		this.bSizeup = bSizeup;
-	}
-
-
 	public boolean isbAddShot() {
 		return bAddShot;
 	}
-
-
-	public void setbAddShot(boolean bAddShot) {
-		this.bAddShot = bAddShot;
-	}
-
 
 	public boolean isbWhippedCream() {
 		return bWhippedCream;
 	}
 
-
-	public void setbWhippedCream(boolean bWhippedCream) {
-		this.bWhippedCream = bWhippedCream;
-	}
-
-
 	public boolean isbSyrup() {
 		return bSyrup;
 	}
 
-
-	public void setbSyrup(boolean bSyrup) {
+	public void setOption(boolean bSizeup, boolean bAddShot, boolean bWhippedCream, boolean bSyrup){
+		this.bWhippedCream = bWhippedCream;
 		this.bSyrup = bSyrup;
+		this.bAddShot = bAddShot;
+		this.bSizeup = bSizeup;
 	}
 }

@@ -1,6 +1,8 @@
 package User;
 
 import CafeManagement.Manager;
+import Menu.Coffee;
+import Menu.Dessert;
 import Menu.Menu;
 import ScannerManager.ScannerManager;
 
@@ -8,14 +10,15 @@ public class Guest extends User{
 
 	@Override
 	public INPUT_TYPE mainMenu() {
-		System.out.println("[손님모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.로그인");
+		System.out.println("[손님모드/메뉴] 1.음료 2.시즌메뉴 3.디저트 4.계산 5.로그인");
 		int value = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.MENU_COFFEE;
 			case 2 : return User.INPUT_TYPE.MENU_SEASON;
 			case 3 : return User.INPUT_TYPE.MENU_DESSERT;
-			case 4 : return User.INPUT_TYPE.LOGIN;
+			case 4 : return User.INPUT_TYPE.MENU_PAY;
+			case 5 : return User.INPUT_TYPE.LOGIN;			
 			default : return null;
 		}
 	}
@@ -32,6 +35,44 @@ public class Guest extends User{
 
 	@Override
 	public Menu menuChoice(int menutype){
+		Menu fineMenu = null;
+		int choiceCategory = inputMenu(menutype);
+		if(-1 == choiceCategory){
+			return null;
+		}
+
+		Menu findMenu = Manager.menuList.get(choiceCategory);
+		Menu newMenu = null;
+		// 생성 정리해야할듯..(팩토리매니저만들까?)
+		if(Menu.MENUTYPE_COFFEE == findMenu.getType()||
+				Menu.MENUTYPE_SEASON == findMenu.getType()){
+			newMenu = new Coffee(findMenu.getIndex(), findMenu.getName(), findMenu.getStockNum(), findMenu.getPrice(), findMenu.getType());
+			addOption((Coffee)newMenu);
+	
+		}else if(Menu.MENUTYPE_DESSERT == findMenu.getType()){
+			Dessert findMenutoDessert = (Dessert)findMenu;
+			newMenu = new Dessert(findMenu.getIndex(), findMenu.getName(), findMenu.getStockNum(), findMenu.getPrice(), findMenu.getType(), findMenutoDessert.getDiscount());
+		}
+		
+		return newMenu;
+	}
+	
+	@Override
+	public void myMenuPrint() {}
+	@Override
+	public void myMenuModify() {}
+	@Override
+	public void adminMenuAdd() {}
+	@Override
+	public void adminMenuModify() {}
+	@Override
+	public void adminMenuDelete() {}
+	@Override
+	public void adminMenuSearch() {}
+	@Override
+	public void adminMenuCount() {}
+	
+	public int inputMenu(int menutype){
 		// TODO: 시간될 때 분류별로 체크해서 출력하는 코드 추가할 것
 		if(Menu.MENUTYPE_COFFEE == menutype)
 			System.out.println("[커피] 0.아메리카노 1.카페라떼 2.카페모카");
@@ -40,53 +81,37 @@ public class Guest extends User{
 		else if(Menu.MENUTYPE_DESSERT == menutype)
 			System.out.println("[디저트] 4.치즈케이크 5.모카케이크 6.마카롱");
 		else
-			return null;
+			return -1;
 	
 		int index = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
+		
+		return index;
+	}
 	
-		Menu findMenu = Manager.menuList.get(index);
-		return findMenu;
-	}
-	
-	@Override
-	public void myMenuPrint() {
-	}
+	public void addOption(Coffee coffee){
+		System.out.println("[옵션추가]옵션추가를 원하시면 1 원치 않으면 0을 눌러주세요");
+		boolean bSizeup 		= false; 	// 사이즈업
+		boolean bAddShot	 	= false; 	// 샷추가
+		boolean bWhippedCream	= false;	// 휘핑추가
+		boolean bSyrup			= false;	// 시럽
 
-	@Override
-	public void myMenuModify() {
-		// TODO Auto-generated method stub
+		System.out.println("[옵션추가] 사이즈 업?(0:No 1:Yes)");
+		bSizeup = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+
+		System.out.println("[옵션추가] 샷추가?(0:No 1:Yes)");
+		bAddShot = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+
+		System.out.println("[옵션추가] 휘핑추가?(0:No 1:Yes)");
+		bWhippedCream = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
+
+		System.out.println("[옵션추가] 시럽추가?(0:No 1:Yes)");
+		bSyrup = (1 == ScannerManager.sc.nextInt() ? true:false);
+		ScannerManager.sc.nextLine();
 		
+		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
 	}
-
-	@Override
-	public void adminMenuAdd() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void adminMenuModify() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void adminMenuDelete() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void adminMenuSearch() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void adminMenuCount() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

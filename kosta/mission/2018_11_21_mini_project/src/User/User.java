@@ -30,7 +30,7 @@ public abstract  class User {
 	public abstract INPUT_TYPE mainMenu();
 	public abstract boolean login();
 	public abstract boolean logout();					// 결과값으로 로그아웃되면 manager roop를 벗어난다
-	public abstract Menu menuChoice(int menutype);		// 메뉴 선택(3개 메뉴 한방에 출력하자)	
+	public abstract Menu menuChoice(int menutype);		// 메뉴 선택(3개 메뉴 한방에 출력하자)	 
 	public abstract void myMenuPrint();
 	public abstract void myMenuModify();
 	public abstract void adminMenuAdd();

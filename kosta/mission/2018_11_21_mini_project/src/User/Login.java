@@ -20,7 +20,7 @@ public class Login extends User {
 	
 	@Override
 	public INPUT_TYPE mainMenu() {
-		System.out.println("[유저모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.로그아웃");
+		System.out.println("[유저모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.결제 7.로그아웃");
 		int value = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		switch(value){
@@ -29,7 +29,8 @@ public class Login extends User {
 			case 3 : return User.INPUT_TYPE.MENU_DESSERT;
 			case 4 : return User.INPUT_TYPE.MY_MENU;
 			case 5 : return User.INPUT_TYPE.MY_MENU_MODIFY;
-			case 6 : return User.INPUT_TYPE.LOGOUT;
+			case 6 : return User.INPUT_TYPE.MENU_PAY;
+			case 7 : return User.INPUT_TYPE.LOGOUT;
 			default : return null;
 		}
 	}
