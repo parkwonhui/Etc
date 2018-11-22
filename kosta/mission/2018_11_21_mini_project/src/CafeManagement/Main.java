@@ -15,12 +15,15 @@ public class Main {
 	
 	public static void main(String[] args) {
 
-		Manager manager = new Manager();
 
 		DataInit();					// 데이터 초기화
-	
-		User user = new Admin();
-		manager.start(user);
+
+		//Manager manager = new Manager();
+		//User user = new Admin();
+		//manager.start(user);
+		
+		LoginManager loginManager = new LoginManager();
+		loginManager.login();
 	}
 
 }

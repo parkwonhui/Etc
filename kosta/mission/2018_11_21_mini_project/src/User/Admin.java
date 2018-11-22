@@ -16,9 +16,8 @@ public class Admin extends User{
 	
 	private UserInfo userInfo;
 	
-	public Admin(UserInfo userInfo){
-		userInfo = null;
-		this.userInfo = userInfo;
+	public Admin(UserInfo user){
+		this.userInfo = user;
 	}
 
 	@Override
@@ -130,6 +129,13 @@ public class Admin extends User{
 	@Override
 	public void adminMenuCount() throws Exception{
 		InfoManager.getInst().PrintStock();
+	}
+	
+	public boolean isPassEquals(String pass) {	
+		if(true == pass.equals(userInfo.getPass()))
+			return true;
+
+		return false;
 	}
 
 }

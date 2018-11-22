@@ -45,10 +45,11 @@ public class Manager {
 			try {
 				INPUT_TYPE inputType = user.mainMenu(); // 메인메뉴를 보여줌과 동시에 사용자
 														// 입력을 받는 함수
-				if (true == isLogout(user, inputType)) // 로그인일 때 빼져나온다
+				if (true == isLogout(user, inputType)) // 로그아웃일 때 빼져나온다
 					break;
 
-				exec(user, inputType); // 로그인 외에 메뉴실행
+				if(true == exec(user, inputType))		 // 로그인 일 때만 true 그 외 false
+					break;
 			} catch (Exception e) {
 				System.out.println("잘못된 값을 입력하였습니다");
 			}
@@ -65,8 +66,9 @@ public class Manager {
 	// 여기선 전부 false를 리턴해야한다. return값이 true면 while문을 빠져나가기 때문이다
 	public boolean exec(final User user, final INPUT_TYPE inputType) {
 		try{
+			System.out.println("input:"+inputType);
 		switch(inputType) {
-		case LOGOUT :
+		case LOGIN :
 			return user.login();					// info 정보 참조해서 로그인한다
 		case MENU_COFFEE :
 		case MENU_SEASON :

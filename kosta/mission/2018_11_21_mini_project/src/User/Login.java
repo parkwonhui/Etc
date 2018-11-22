@@ -162,4 +162,11 @@ public class Login extends User {
 		
 		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
 	}
+	
+	public boolean isPassEquals(String pass) {
+		if(true == pass.equals(userInfo.getPass()))
+			return true;
+
+		return false;
+	}
 }

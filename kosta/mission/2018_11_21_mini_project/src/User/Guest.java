@@ -1,7 +1,5 @@
 package User;
 
-import java.nio.channels.ScatteringByteChannel;
-
 import CafeManagement.Manager;
 import Info.InfoManager;
 import Menu.Coffee;
@@ -39,13 +37,11 @@ public class Guest extends User{
 
 	@Override
 	public Menu menuChoice(int menutype) throws Exception{
-		Menu fineMenu = null;
 		int choiceCategory = inputMenu(menutype);
 		if(-1 == choiceCategory){
 			return null;
 		}
 
-		//Menu findMenu = Manager.menuList.get(choiceCategory);
 		Menu findMenu = InfoManager.getInst().searchMenu(choiceCategory);
 		Menu newMenu = null;
 		// 생성 정리해야할듯..(팩토리매니저만들까?)
@@ -117,4 +113,11 @@ public class Guest extends User{
 		
 		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
 	}
+
+	// guest는 비밀번호와 상관없다
+	public boolean isPassEquals(String pass) {
+		return false;
+	}
+	
+
 }

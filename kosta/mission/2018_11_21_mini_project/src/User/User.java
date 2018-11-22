@@ -3,6 +3,7 @@ package User;
 import Menu.Menu;
 
 public abstract  class User {
+	
 	public enum INPUT_TYPE{
 		
 		MAIN_CATEGORY, 		// 메뉴고르기, 매장관리
@@ -44,4 +45,6 @@ public abstract  class User {
 	public abstract void adminMenuDelete() throws Exception;
 	public abstract void adminUserSearch() throws Exception;
 	public abstract void adminMenuCount() throws Exception;
+	
+	public abstract boolean isPassEquals(String pass);
 }
