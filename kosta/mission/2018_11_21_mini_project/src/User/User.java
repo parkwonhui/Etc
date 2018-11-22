@@ -11,7 +11,8 @@ public abstract  class User {
 		MENU_COFFEE,		// 커피
 		MENU_SEASON,		// 시즌
 		MENU_DESSERT,		// 디저트
-		MENU_CHOICE,		// 메뉴 고르기 이거 없애고..각자 메뉴를 주자(현재 쓰지 않음 이따 지우자)
+		MENU_CHOICE,		// 안씀
+		MENU_VIEW,			// 관리자만 보는 것(전체 메뉴보기)
 		MENU_PAY,			// 메뉴 선택완료. 계산
 		MY_MENU,			// 마이메뉴
 		MY_MENU_MODIFY,		// 마이메뉴 수정
@@ -31,6 +32,7 @@ public abstract  class User {
 	public abstract boolean login() throws Exception;
 	public abstract boolean logout() throws Exception;					// 결과값으로 로그아웃되면 manager roop를 벗어난다
 	public abstract Menu menuChoice(int menutype) throws Exception;		// 메뉴 선택(3개 메뉴 한방에 출력하자)	 
+	public abstract void viewMenu() throws Exception;					// 메뉴 전체 출력	
 	public abstract void myMenuPrint() throws Exception;
 	public abstract void myMenuModify() throws Exception;
 	public abstract void adminMenuAdd() throws Exception;

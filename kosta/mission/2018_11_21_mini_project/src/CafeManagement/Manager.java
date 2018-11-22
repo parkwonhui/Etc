@@ -133,6 +133,9 @@ public class Manager {
 		case ADMIN_MENU_COUNT :
 			user.adminMenuCount();
 			break;
+		case MENU_VIEW:
+			user.viewMenu();
+			break;
 		default:
 			break;
 		}

@@ -2,6 +2,7 @@ package User;
 
 import CafeManagement.Manager;
 import Info.InfoManager;
+import Info.UserInfo;
 import Menu.Coffee;
 import Menu.Dessert;
 import Menu.Menu;
@@ -10,11 +11,15 @@ import User.User.INPUT_TYPE;
 
 public class Admin extends User{
 	
-	public Admin(){}
+	private UserInfo userInfo;
+	
+	public Admin(){
+		userInfo = null;
+	}
 
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception{
-		System.out.println("[관리자모드/매장관리] 1.메뉴추가 2.메뉴수정 3.메뉴삭제 4.회원검색 5.재고관리 6.로그아웃");
+		System.out.println("[관리자모드/매장관리] 1.메뉴추가 2.메뉴수정 3.메뉴삭제 4.회원검색 5.재고관리 6.메뉴보기 7.로그아웃");
 		int value = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		switch(value){
@@ -23,10 +28,16 @@ public class Admin extends User{
 			case 3 : return User.INPUT_TYPE.ADMIN_MENU_DELETE;
 			case 4 : return User.INPUT_TYPE.ADMIN_MENU_SEARCH;
 			case 5 : return User.INPUT_TYPE.ADMIN_MENU_COUNT;
-			case 6 : return User.INPUT_TYPE.LOGOUT;
+			case 6 : return User.INPUT_TYPE.MENU_VIEW;
+			case 7 : return User.INPUT_TYPE.LOGOUT;
 			default : return null;
 		}
 	}
+	
+	public void viewMenu() throws Exception{
+		InfoManager.getInst().allPrint();
+	}
+
 
 	@Override
 	public boolean login() throws Exception{
@@ -41,6 +52,7 @@ public class Admin extends User{
 
 	@Override
 	public Menu menuChoice(int menutype){return null;}
+	
 	@Override
 	public void myMenuPrint() throws Exception{}
 	@Override
@@ -52,21 +64,17 @@ public class Admin extends User{
 		 String name = ScannerManager.sc.nextLine();
 		 System.out.println("메뉴 가격 :");
 		 int price = ScannerManager.sc.nextInt();
-		 ScannerManager.sc.nextInt();
+		 ScannerManager.sc.nextLine();
 		 System.out.println("메뉴 할인(90%할인일 시 90):");
 		 int discount = ScannerManager.sc.nextInt();
 		 ScannerManager.sc.nextLine();
 		 System.out.println("메뉴 타입 (0:음료 1:시즌 2:디저트):");
 		 int type = ScannerManager.sc.nextInt();
 		 
-		 int index =  InfoManager.getInst().getMenuDataSize() - 1;
-		 Menu newMenu;
-		 if(Menu.MENUTYPE_COFFEE == type || Menu.MENUTYPE_SEASON == type)
-			 newMenu = new Coffee(index, name, 10, price, type);
-		 else if(Menu.MENUTYPE_DESSERT == type)
-			 newMenu = new Dessert(index, name, 10, price, type, 90);
-
+		 int index =  InfoManager.getInst().getMenuDataSize() - 1;		 
+		 InfoManager.getInst().addMenu(index, name, price, discount, type);
 		 
+		 System.out.println("[system]메뉴가 추가되었습니다");
 	}
 
 	@Override
@@ -118,8 +126,6 @@ public class Admin extends User{
 		
 		// 유저가 좋아하는 메뉴를 출력하기 위해 user+userInfo를 합쳐야 한다
 		//UserInfo = InfoManager.getInst().searchUser(name);
-		
-		
 	}
 
 	@Override

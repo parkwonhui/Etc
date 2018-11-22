@@ -5,6 +5,7 @@ import java.util.Map;
 
 import CafeManagement.Manager;
 import Info.InfoManager;
+import Info.UserInfo;
 import Menu.Coffee;
 import Menu.Dessert;
 import Menu.Menu;
@@ -15,6 +16,8 @@ public class Login extends User {
 	
 	// 마이메뉴
 	private Menu myMenu;
+	private UserInfo userInfo;
+	
 	
 	public Login(){
 		myMenu = null;
@@ -50,7 +53,8 @@ public class Login extends User {
 	public boolean logout() throws Exception {
 		return true;	
 	}
-
+	public void viewMenu() throws Exception{}
+	
 	@Override	
 	public Menu menuChoice(int menutype) throws Exception{
 		Menu fineMenu = null;

@@ -75,7 +75,8 @@ public class Guest extends User{
 	public void adminUserSearch() throws Exception {}
 	@Override
 	public void adminMenuCount()  throws Exception{}
-	
+	public void viewMenu() throws Exception{}
+
 	public int inputMenu(int menutype){
 		// TODO: 시간될 때 분류별로 체크해서 출력하는 코드 추가할 것
 		if(Menu.MENUTYPE_COFFEE == menutype)

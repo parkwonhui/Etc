@@ -1,6 +1,7 @@
 package CafeManagement;
 
 import Info.InfoManager;
+import User.Admin;
 import User.Guest;
 import User.Login;
 import User.User;
@@ -18,7 +19,7 @@ public class Main {
 
 		DataInit();					// 데이터 초기화
 	
-		User user = new Login();
+		User user = new Admin();
 		manager.start(user);
 	}
 
