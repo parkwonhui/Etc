@@ -92,18 +92,34 @@ public class Admin extends User{
 		int type  = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		
-		//menu.modifyMenuInfo(String name, int price, int type)
-	
+		menu.modifyMenuInfo(name, price, type);
+
+		if(menu instanceof Dessert) {
+			Dessert dessert = (Dessert)menu;
+			dessert.setDiscount(discount);
+		}
+			
 	}
 
 	@Override
 	public void adminMenuDelete() throws Exception{
-		// TODO Auto-generated method stub
+		InfoManager.getInst().allPrint();
+		System.out.println("삭제할 메뉴 index를 입력해주세요");
+		int index  = ScannerManager.sc.nextInt();
+		ScannerManager.sc.nextLine();
 		
+		InfoManager.getInst().deleteMenu(index);
 	}
 
 	@Override
-	public void adminMenuSearch() throws Exception{		
+	public void adminUserSearch() throws Exception{
+		System.out.println("유저의 id를 입력해주세요");
+		String name = ScannerManager.sc.nextLine();
+		
+		// 유저가 좋아하는 메뉴를 출력하기 위해 user+userInfo를 합쳐야 한다
+		//UserInfo = InfoManager.getInst().searchUser(name);
+		
+		
 	}
 
 	@Override

@@ -12,5 +12,14 @@ public class Dessert extends Menu implements DiscountPercent{
 	public int getDiscount() {	// 할인율
 		return discountPercent;
 	}
-
+	
+	public void setDiscount(int disscount) {	// 할인율
+		if(0 > disscount)
+			return;
+		
+		if(100 < disscount)
+			return;
+		
+		discountPercent = disscount;		
+	}
 }

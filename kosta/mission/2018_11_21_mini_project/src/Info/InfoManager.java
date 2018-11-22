@@ -41,7 +41,7 @@ public class InfoManager {
 			menuinfo.put(index, menu);
 	}
 
-	public UserInfo serachUser(String id) {
+	public UserInfo searchUser(String id) {
 		if (false == userinfo.containsKey(id))
 			return null;
 
@@ -53,6 +53,16 @@ public class InfoManager {
 			return null;
 
 		return menuinfo.get(id);
+	}
+	
+	public boolean deleteMenu(int id) {
+		if(false == menuinfo.containsKey(id)) {
+			System.out.println("메뉴를 찾을 수 없습니다");
+			return false;
+		}
+		
+		menuinfo.remove(id);
+		return true;
 	}
 	
 	public int getUserDataSize(){

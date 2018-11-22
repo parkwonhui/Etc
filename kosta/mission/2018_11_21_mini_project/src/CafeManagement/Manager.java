@@ -128,7 +128,7 @@ public class Manager {
 			user.adminMenuDelete();
 			break;
 		case ADMIN_MENU_SEARCH :
-			user.adminMenuSearch();
+			user.adminUserSearch();
 			break;
 		case ADMIN_MENU_COUNT :
 			user.adminMenuCount();
