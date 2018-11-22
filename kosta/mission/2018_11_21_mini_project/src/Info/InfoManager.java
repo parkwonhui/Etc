@@ -31,8 +31,14 @@ public class InfoManager {
 	}
 
 	public void addMenu(int index, String name, int price, int discount, int type) {
-		Menu menu = new Menu(index, name, price, discount, type);
-		menuinfo.put(index, menu);
+		Menu menu = null;
+		if(Menu.MENUTYPE_COFFEE  == type)
+			menu = new Coffee(index, name, 10, price, type);			// 개수는 생성 때 임의로 10으로 설정
+		else
+			menu = new Dessert(index, name, 10, price, type, discount);
+		
+		if(null != menu)
+			menuinfo.put(index, menu);
 	}
 
 	public UserInfo serachUser(String id) {
