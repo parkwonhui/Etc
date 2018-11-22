@@ -11,15 +11,15 @@ public class LoginManager {
 	
 	public void login() {
 		Manager manager = new Manager();
-		User user = null;
+		Guest guest = new Guest();
+		User user = guest;
 		while(true) {
-		
-			if(null == user)
-				user = new Guest();
-			
-			manager.start(user);
-
-			user = loginInput(user);
+					
+			User.LOGIN_STATE type = manager.start(user);
+			if(User.LOGIN_STATE.LOGIN == type)
+				user = loginInput(user);
+			else
+				user = guest;
 		}
 	}
 	
