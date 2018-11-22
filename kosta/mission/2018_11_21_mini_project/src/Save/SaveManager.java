@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.sql.rowset.serial.SerialStruct;
 
 import Menu.Coffee;
 import Menu.Dessert;
@@ -47,7 +48,7 @@ public class SaveManager {
 		System.out.println("******* 구매리스트 ********");		
 		for(int i =0; i < saveList.size(); ++i){
 			Menu menu = saveList.get(i);
-			System.out.println(i+":"+menu.getName());
+			System.out.println(i+":"+" "+menu.getName()+" 가격:"+menu.getPrice());
 		}
 	}
 	
@@ -68,7 +69,7 @@ public class SaveManager {
 			int optionValue = addOptionMoney((Coffee)menu);
 			allPrice += optionValue;
 			
-			System.out.println("["+(i+1)+"]이름:"+menu.getName()+"옵션추가:"+optionValue+": 가격:"+menu.getPrice());
+			System.out.println("["+(i+1)+"]이름:"+menu.getName()+" 옵션추가:"+optionValue+": 가격:"+menu.getPrice());
 		}
 		return allPrice;
 	}
@@ -110,7 +111,7 @@ public class SaveManager {
 			
 			allPrice += price;
 
-			System.out.println("["+(i+1)+"]이름:"+menu.getName()+": 가격:"+menu.getPrice()+"세트할인금액:"+setDiscount);
+			System.out.println("["+(i+1)+"]이름:"+menu.getName()+": 가격:"+menu.getPrice()+" 세트할인금액:"+setDiscount);
 		}
 		return allPrice;
 	}

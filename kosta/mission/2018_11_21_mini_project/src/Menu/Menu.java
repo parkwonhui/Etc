@@ -38,6 +38,12 @@ public class Menu{
 		return type;
 	}
 	
+	public void modifyMenuInfo(String name, int price, int type){
+		this.name = name;
+		this.price = price;
+		this.type = type;
+	}
+	
 	public boolean minusOneStockNum(){
 		if(0 >= stockNum)
 			return false;

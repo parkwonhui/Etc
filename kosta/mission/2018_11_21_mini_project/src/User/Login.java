@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import CafeManagement.Manager;
+import Info.InfoManager;
 import Menu.Coffee;
 import Menu.Dessert;
 import Menu.Menu;
@@ -19,12 +20,12 @@ public class Login extends User {
 		myMenu = null;
 	}
 	
-	public void SetMyMenu(Menu menu){
+	public void SetMyMenu(Menu menu) throws Exception{
 		myMenu = menu;	
 	}
 	
 	@Override
-	public INPUT_TYPE mainMenu() {
+	public INPUT_TYPE mainMenu() throws Exception {
 		System.out.println("[유저모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.결제 7.로그아웃");
 		int value = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
@@ -41,24 +42,24 @@ public class Login extends User {
 	}
 
 	@Override
-	public boolean login() {
+	public boolean login() throws Exception {
 		return false;
 	}
 
 	@Override
-	public boolean logout() {
+	public boolean logout() throws Exception {
 		return true;	
 	}
 
 	@Override	
-	public Menu menuChoice(int menutype){
+	public Menu menuChoice(int menutype) throws Exception{
 		Menu fineMenu = null;
 		int choiceCategory = inputMenu(menutype);
 		if(-1 == choiceCategory){
 			return null;
 		}
-
-		Menu findMenu = Manager.menuList.get(choiceCategory);
+		
+		Menu findMenu = InfoManager.getInst().searchMenu(choiceCategory);
 		Menu newMenu = null;
 		// 생성 정리해야할듯..(팩토리매니저만들까?)
 		if(Menu.MENUTYPE_COFFEE == findMenu.getType()||
@@ -74,7 +75,7 @@ public class Login extends User {
 		return newMenu;
 	}
 	
-	public int inputMenu(int menutype){
+	public int inputMenu(int menutype) throws Exception{
 		// TODO: 시간될 때 분류별로 체크해서 출력하는 코드 추가할 것
 		if(Menu.MENUTYPE_COFFEE == menutype)
 			System.out.println("[커피] 0.아메리카노 1.카페라떼 2.카페모카");
@@ -88,11 +89,16 @@ public class Login extends User {
 		int index = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		
+		// 범위 체크
+		if(Menu.MENUTYPE_COFFEE == menutype && index >= 3) return -1;
+		else if(Menu.MENUTYPE_SEASON == menutype && index != 3 ) return -1;
+		else if(Menu.MENUTYPE_DESSERT == menutype && (index < 4 || index > 6 )) return -1;
+		
 		return index;
 	}
 	
 	@Override
-	public void myMenuPrint() {
+	public void myMenuPrint() throws Exception{
 		if(null == myMenu)
 			System.out.println("myMenu가 없습니다");
 		else
@@ -100,11 +106,11 @@ public class Login extends User {
 	}
 
 	@Override
-	public void myMenuModify() {
+	public void myMenuModify() throws Exception{
 		System.out.println("MyMenu를 선택하세요(숫자입력)");
-		Map<Integer, Menu> menuList = Manager.menuList;
-		for(int i = 0; i < Manager.menuList.size(); ++i){
-			Menu menu = menuList.get(i);
+		int size = InfoManager.getInst().getMenuDataSize();
+		for(int i = 0; i < size; ++i){
+			Menu menu = InfoManager.getInst().searchMenu(i);
 			if(menu instanceof Coffee){
 				System.out.println(menu.getIndex()+"."+menu.getName());
 			}
@@ -113,7 +119,7 @@ public class Login extends User {
 		int index = ScannerManager.sc.nextInt();
 		ScannerManager.sc.nextLine();
 		
-		Menu newMyMenu = menuList.get(index);
+		Menu newMyMenu = InfoManager.getInst().searchMenu(index);
 		if(null == newMyMenu){
 			System.out.println("잘못된 index 입니다");
 		}else{
@@ -123,17 +129,17 @@ public class Login extends User {
 	}
 
 	@Override
-	public void adminMenuAdd() {}
+	public void adminMenuAdd()  throws Exception{}
 	@Override
-	public void adminMenuModify() {}
+	public void adminMenuModify()  throws Exception{}
 	@Override
-	public void adminMenuDelete() {}
+	public void adminMenuDelete() throws Exception {}
 	@Override
-	public void adminMenuSearch() {}
+	public void adminMenuSearch()  throws Exception{}
 	@Override
-	public void adminMenuCount() {}
+	public void adminMenuCount()  throws Exception{}
 
-	public void addOption(Coffee coffee){
+	public void addOption(Coffee coffee) throws Exception{
 		System.out.println("[옵션추가]옵션추가를 원하시면 1 원치 않으면 0을 눌러주세요");
 		boolean bSizeup 		= false; 	// 사이즈업
 		boolean bAddShot	 	= false; 	// 샷추가
