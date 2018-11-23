@@ -1,5 +1,8 @@
 package User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import CafeManagement.Manager;
 import Info.InfoManager;
 import Menu.Coffee;
@@ -13,14 +16,17 @@ public class Guest extends User{
 	
 	@Override
 	public INPUT_TYPE mainMenu()  throws Exception{
-		System.out.println("[손님모드/메뉴] 1.음료 2.시즌메뉴 3.디저트 4.계산 5.로그인");
+		System.out.println("EDIE Coffee에 방문하신 손님을 환영합니다");		
+		System.out.println("1.음료 2.시즌메뉴 3.디저트 4.계산 5.로그인 6.회원가입");
+		System.out.println("====================================");
 		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.MENU_COFFEE;
 			case 2 : return User.INPUT_TYPE.MENU_SEASON;
 			case 3 : return User.INPUT_TYPE.MENU_DESSERT;
 			case 4 : return User.INPUT_TYPE.MENU_PAY;
-			case 5 : return User.INPUT_TYPE.LOGIN;			
+			case 5 : return User.INPUT_TYPE.LOGIN;		
+			case 6 : return User.INPUT_TYPE.JOIN;
 			default : return null;
 		}
 	}
@@ -98,7 +104,6 @@ public class Guest extends User{
 	}
 	
 	public void addOption(Coffee coffee) throws Exception{
-		System.out.println("[옵션추가]옵션추가를 원하시면 1 원치 않으면 0을 눌러주세요");
 		boolean bSizeup 		= false; 	// 사이즈업
 		boolean bAddShot	 	= false; 	// 샷추가
 		boolean bWhippedCream	= false;	// 휘핑추가
@@ -132,4 +137,30 @@ public class Guest extends User{
 		return true;
 	}
 
+	public void join() throws Exception{
+		Pattern idPattern = Pattern.compile("^[a-zA-Z]{1}[\\w]{4,9}$");
+		Pattern passPattern = Pattern.compile("^[\\w]{4,10}$");
+		
+		System.out.println("회원가입 id, pass를 입력해주세요.\n - id,pass는 영어대소문자숫자 4~10자리 입니다\n - 첫글자는 영어대소문자로 시작합니다");
+		System.out.print("[회원가입] id 입력:");
+		String id = ScannerManager.ReadString();
+		System.out.print("[회원가입] pass 입력:");
+		String pass = ScannerManager.ReadString();
+
+		Matcher idMatcher = idPattern.matcher(id);
+		Matcher passMatcher = passPattern.matcher(pass);
+		if(false == idMatcher.find())
+			throw new Exception("[system]id를 잘못 입력하였습니다\n 메인화면으로 돌아갑니다");
+			
+		if(false == passMatcher.find())
+			throw new Exception("[system]pass를 잘못 입력하였습니다\n 메인화면으로 돌아갑니다");		
+		
+		if(false == InfoManager.getInst().addUserInfo(id, pass, User.TYPE_LOGIN))
+			throw new Exception("[system] 이미 같은 아이디가 있습니다 메인화면으로 돌아갑니다");
+		
+		// 메뉴추가 시 파일 저장
+		InfoManager.getInst().saveUser();
+
+		System.out.println(" 축하합니다 회원가입 되었습니다");
+	}
 }

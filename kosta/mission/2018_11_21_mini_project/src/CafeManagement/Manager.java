@@ -57,7 +57,7 @@ public class Manager {
 	}
 	
 	// 여기선 전부 false를 리턴해야한다. return값이 true면 while문을 빠져나가기 때문이다
-	public boolean exec(final User user, final INPUT_TYPE inputType) {
+	public boolean exec(final User user, final INPUT_TYPE inputType) throws Exception  {
 		try{
 		switch(inputType) {
 		case LOGIN :
@@ -72,8 +72,7 @@ public class Manager {
 			
 			Menu menu =user.menuChoice(menutype);	// 커피메뉴(논커피도 있지만 일단 네임을 이렇게 만든다)
 			if(null == menu){
-				System.out.println("[System] error");
-				return false;
+				throw new Exception("메뉴 번호를 잘못 입력하였습니다");
 			}
 			
 			// 메뉴 갯수 체크
@@ -135,13 +134,16 @@ public class Manager {
 			user.viewMenu();
 			System.out.println("총 매출:"+getTotalMoney());
 			break;
+		case JOIN:
+			user.join();
+			break;
 		default:
 			break;
 		}
 		}catch(Exception e){
 			System.out.println(e.getMessage());
-			e.printStackTrace();
-			System.out.println("잘못된 값을 입력하였습니다");
+			//e.printStackTrace();
+			//System.out.println("잘못된 값을 입력하였습니다");
 		}
 		
 		return false;

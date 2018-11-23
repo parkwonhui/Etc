@@ -30,7 +30,9 @@ public class Login extends User {
 	
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception {
+		System.out.println("EDIE Coffee에 방문하신 "+userInfo.getId()+" 님을 환영합니다");
 		System.out.println("[유저모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.결제 7.로그아웃");
+		System.out.println("===============================================");
 		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.MENU_COFFEE;
@@ -122,12 +124,15 @@ public class Login extends User {
 		int index = ScannerManager.ReadInt();
 		
 		Menu newMyMenu = InfoManager.getInst().searchMenu(index);
-		if(null == newMyMenu){
-			System.out.println("잘못된 index 입니다");
-		}else{
-			System.out.println("새로운 MyMenu"+newMyMenu.getName()+"를 등록했습니다");
-			SetMyMenu(newMyMenu);
-		}
+		if(null == newMyMenu)
+			throw new Exception("없는 메뉴를 선택하였습니다");
+		
+		if(Menu.MENUTYPE_COFFEE != newMyMenu.getType())
+			throw new Exception("음료가 아닙니다");	
+		
+		System.out.println("새로운 MyMenu"+newMyMenu.getName()+"를 등록했습니다");
+		SetMyMenu(newMyMenu);
+	
 	}
 
 	@Override
@@ -142,22 +147,21 @@ public class Login extends User {
 	public void adminMenuCount()  throws Exception{}
 
 	public void addOption(Coffee coffee) throws Exception{
-		System.out.println("[옵션추가]옵션추가를 원하시면 1 원치 않으면 0을 눌러주세요");
 		boolean bSizeup 		= false; 	// 사이즈업
 		boolean bAddShot	 	= false; 	// 샷추가
 		boolean bWhippedCream	= false;	// 휘핑추가
 		boolean bSyrup			= false;	// 시럽
 
-		System.out.println("[옵션추가] 사이즈 업?(0:No 1:Yes)");
+		System.out.print("[옵션추가] 사이즈 업?(0:No 1:Yes)");
 		bSizeup = (1 == ScannerManager.ReadInt() ? true:false);
 
-		System.out.println("[옵션추가] 샷추가?(0:No 1:Yes)");
+		System.out.print("[옵션추가] 샷추가?(0:No 1:Yes)");
 		bAddShot = (1 == ScannerManager.ReadInt() ? true:false);
 
-		System.out.println("[옵션추가] 휘핑추가?(0:No 1:Yes)");
+		System.out.print("[옵션추가] 휘핑추가?(0:No 1:Yes)");
 		bWhippedCream = (1 == ScannerManager.ReadInt() ? true:false);
 		
-		System.out.println("[옵션추가] 시럽추가?(0:No 1:Yes)");
+		System.out.print("[옵션추가] 시럽추가?(0:No 1:Yes)");
 		bSyrup = (1 == ScannerManager.ReadInt() ? true:false);
 		
 		coffee.setOption(bSizeup, bAddShot, bWhippedCream, bSyrup);
@@ -176,7 +180,7 @@ public class Login extends User {
 		if(null != myMenu)
 			System.out.println(" myMenu:"+myMenu.getName()+"("+myMenu.getPrice()+")");
 		else
-			System.out.println();
+			System.out.println(" myMenu가 없습니다");
 	}
 	
 	public boolean checkInputMenu(final int index, final int menuType) throws Exception{
@@ -186,4 +190,14 @@ public class Login extends User {
 		
 		return true;
 	}
+	
+	public String getId(){
+		return userInfo.getId();
+	}
+	
+	public String getPass(){
+		return userInfo.getPass();
+	}	
+	
+	public void join() throws Exception{}
 }

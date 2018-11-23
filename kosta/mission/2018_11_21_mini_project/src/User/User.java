@@ -22,6 +22,7 @@ public abstract  class User {
 		ADMIN_MENU_DELETE,	// 메뉴삭제
 		ADMIN_MENU_SEARCH,	// 회원검색
 		ADMIN_MENU_COUNT,	// 재고보기
+		JOIN,				// 회원가입
 	};
 	
 	public enum LOGIN_STATE{
@@ -45,6 +46,8 @@ public abstract  class User {
 	public abstract void adminMenuDelete() throws Exception;
 	public abstract void adminUserSearch() throws Exception;
 	public abstract void adminMenuCount() throws Exception;
+	public abstract void join() throws Exception;						// 회원가입
+	
 	
 	public abstract boolean isPassEquals(String pass);
 }

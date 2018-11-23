@@ -28,12 +28,18 @@ public class InfoManager {
 		return instance;
 	}
 
-	public void addUserInfo(String id, String pass, int type) {
+	public boolean addUserInfo(String id, String pass, int type) {
+		if(null != searchUser(id)){
+			return false;
+		}
+		
 		UserInfo user = new UserInfo(id, pass);
 		if(User.TYPE_ADMIN == type)
 			userinfo.put(id, new Admin(user));
 		else
-			userinfo.put(id, new Login(user));		
+			userinfo.put(id, new Login(user));
+		
+		return true;
 	}
 
 	public void addMenu(int index, String name, int price, int discount, int type) {
@@ -230,5 +236,98 @@ public class InfoManager {
 
 		}
 
+	}
+	
+	public void saveUser(){
+		 saveUserInfotoCSV(System.getProperty("user.dir")+"\\userInfo.csv");
+	}
+
+	public void saveUserInfotoCSV(String path) {
+		BufferedWriter bufWriter = null;
+		try {
+			bufWriter = Files.newBufferedWriter(Paths.get(path));
+			bufWriter.write("Index,ID,PW,Type");
+			bufWriter.newLine();
+			int index = 0;
+			Set set = userinfo.entrySet();
+			Iterator iter = set.iterator();
+			while (iter.hasNext()) {
+				Map.Entry<String, User> temp = (Map.Entry<String, User>) iter.next();
+				User user = temp.getValue();
+				if (user instanceof Login) {
+					
+					Login login = (Login) user;
+					String id = login.getId();
+					String pass = login.getPass();
+					int type = User.TYPE_LOGIN;
+					bufWriter.write(index+","+id+","+pass+","+type);
+					bufWriter.newLine();
+					++index;
+				} else if (user instanceof Admin) {
+					
+					Admin admin = (Admin) user;
+					String id = admin.getId();
+					String pass = admin.getPass();
+					int type = User.TYPE_ADMIN;
+					bufWriter.write(index+","+id+","+pass+","+type);
+					bufWriter.newLine();
+					++index;
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				bufWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void saveMenu(){
+		 saveMenuInfotoCSV(System.getProperty("user.dir")+"\\menu.csv");
+	}
+
+	public void saveMenuInfotoCSV(String path) {
+		BufferedWriter bufWriter = null;
+		try {
+			bufWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "utf-8"));
+			bufWriter.write("Index,Name,Price,Discount,Type");
+			bufWriter.newLine();
+			Set set = menuinfo.entrySet();
+			Iterator iter = set.iterator();
+			while (iter.hasNext()) {
+				Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>) iter.next();
+				Menu menu = temp.getValue();
+				if(null == menu)
+					continue;
+				
+				int 	index 	= menu.getIndex();
+				String 	name 	= menu.getName();
+				int 	price 	= menu.getPrice();
+				int 	type 	= menu.getType();
+				int 	disccount = 100;
+				if (menu instanceof Dessert) {
+					Dessert dessert = (Dessert)menu;
+					disccount = dessert.getDiscount();
+
+				}
+				bufWriter.write(index+","+name+","+price+","+disccount+","+type);
+				bufWriter.newLine();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				bufWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

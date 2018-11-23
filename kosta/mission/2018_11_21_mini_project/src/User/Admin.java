@@ -23,6 +23,7 @@ public class Admin extends User{
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception{
 		System.out.println("[관리자모드/매장관리] 1.메뉴추가 2.메뉴수정 3.메뉴삭제 4.회원검색 5.재고관리 6.매출 7.로그아웃");
+		System.out.println("========================================================================");
 		int value = ScannerManager.ReadInt();
 		switch(value){
 			case 1 : return User.INPUT_TYPE.ADMIN_MENU_ADD;
@@ -76,7 +77,9 @@ public class Admin extends User{
 		 
 		 int index =  InfoManager.getInst().getMenuDataSize();		 
 		 InfoManager.getInst().addMenu(index, name, price, discount, type);
-		 
+
+		 // 메뉴추가 시 파일 저장
+		 InfoManager.getInst().saveMenu();
 		 System.out.println("[system]메뉴가 추가되었습니다");
 	}
 
@@ -87,10 +90,8 @@ public class Admin extends User{
 		int index = ScannerManager.ReadInt();
 
 		Menu menu = InfoManager.getInst().searchMenu(index);
-		if(null == menu){
-			System.out.println("메뉴를 찾을 수 없습니다");
-			return;
-		}
+		if(null == menu)
+			throw new Exception("메뉴를 찾을 수 없습니다");
 		
 		System.out.println("이름 입력");
 		String name = ScannerManager.ReadString();
@@ -128,10 +129,8 @@ public class Admin extends User{
 		
 		// 유저가 좋아하는 메뉴를 출력하기 위해 user+userInfo를 합쳐야 한다
 		User user = InfoManager.getInst().searchUser(name);
-		if(null == user){
-			System.out.println("유저를 찾을 수 없습니다");
-			return;
-		}
+		if(null == user)
+			throw new Exception("유저를 찾을 수 없습니다");
 		
 		if(user instanceof Login){
 			Login login = (Login)user;
@@ -149,5 +148,17 @@ public class Admin extends User{
 			return true;
 
 		return false;
+	}
+	
+	public String getId(){
+		return userInfo.getId();
+	}
+	
+	public String getPass(){
+		return userInfo.getPass();
+	}
+
+	public void join() throws Exception{
+		
 	}
 }
