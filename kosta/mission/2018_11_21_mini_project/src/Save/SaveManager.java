@@ -54,8 +54,6 @@ public class SaveManager {
 	
 	public void calAllMenu(){
 		System.out.println("******* 담은 메뉴 ********");
-		System.out.println("커피:"+getCoffeeMoney());
-		System.out.println("디저트:"+getDessertMoney());
 		int total = getCoffeeMoney()+getSeasonMoney()+getDessertMoney();
 		System.out.println("**** 총가격 :"+total+"**** ");		
 	}
@@ -93,7 +91,6 @@ public class SaveManager {
 	private int getDessertMoney(){
 		int allPrice = 0;
 		int setMenuCount = calSetMenu();
-		System.out.println("메뉴:"+setMenuCount);
 		int setCount = 0;
 		int resultMoney = 0;			// 결과금액
 		int setDiscount = 0;			// 할인금액
@@ -117,11 +114,7 @@ public class SaveManager {
 				
 			allPrice += resultMoney;									// 가격 더하기
 
-			System.out.println("["+(i+1)+"]"+menu.getName()+": 가격:"+menu.getPrice()+" 세트할인금액:"+setDiscount+" 최종금액:"+resultMoney);
-			
-			//초기화
-			
-			
+			System.out.println("["+(i+1)+"]"+menu.getName()+": 가격:"+menu.getPrice()+" 세트할인금액:"+setDiscount+" 최종금액:"+resultMoney);			
 		}
 		return allPrice;
 	}
