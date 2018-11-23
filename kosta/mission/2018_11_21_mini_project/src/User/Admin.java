@@ -87,6 +87,10 @@ public class Admin extends User{
 		int index = ScannerManager.ReadInt();
 
 		Menu menu = InfoManager.getInst().searchMenu(index);
+		if(null == menu){
+			System.out.println("메뉴를 찾을 수 없습니다");
+			return;
+		}
 		
 		System.out.println("이름 입력");
 		String name = ScannerManager.ReadString();
@@ -123,7 +127,16 @@ public class Admin extends User{
 		String name = ScannerManager.ReadString();
 		
 		// 유저가 좋아하는 메뉴를 출력하기 위해 user+userInfo를 합쳐야 한다
-		//UserInfo = InfoManager.getInst().searchUser(name);
+		User user = InfoManager.getInst().searchUser(name);
+		if(null == user){
+			System.out.println("유저를 찾을 수 없습니다");
+			return;
+		}
+		
+		if(user instanceof Login){
+			Login login = (Login)user;
+			login.printInfo();
+		}
 	}
 
 	@Override
@@ -137,5 +150,4 @@ public class Admin extends User{
 
 		return false;
 	}
-
 }

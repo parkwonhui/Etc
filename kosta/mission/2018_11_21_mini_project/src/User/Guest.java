@@ -80,21 +80,20 @@ public class Guest extends User{
 	public int inputMenu(int menutype) throws Exception{
 		// TODO: 시간될 때 분류별로 체크해서 출력하는 코드 추가할 것
 		if(Menu.MENUTYPE_COFFEE == menutype)
-			System.out.println("[커피] 0.아메리카노 1.카페라떼 2.카페모카");
+			InfoManager.getInst().allCoffeePrint();
 		else if(Menu.MENUTYPE_SEASON == menutype)
-			System.out.println("[시즌] 3.시즌");	
+			InfoManager.getInst().allSeasonPrint();
 		else if(Menu.MENUTYPE_DESSERT == menutype)
-			System.out.println("[디저트] 4.치즈케이크 5.모카케이크 6.마카롱");
+			InfoManager.getInst().allDessertPrint();
 		else
 			return -1;
 	
 		int index = ScannerManager.ReadInt();
 		
-		// 범위 체크
-		if(Menu.MENUTYPE_COFFEE == menutype && index >= 3) return -1;
-		else if(Menu.MENUTYPE_SEASON == menutype && index != 3 ) return -1;
-		else if(Menu.MENUTYPE_DESSERT == menutype && (index < 4 || index > 6 )) return -1;
-		
+		// 입력 범위 체크
+		if(false == checkInputMenu(index, menutype))
+			index = -1;
+
 		return index;
 	}
 	
@@ -122,5 +121,15 @@ public class Guest extends User{
 		return false;
 	}
 	
+	public boolean checkInputMenu(final int index, final int menuType) throws Exception{
+		Menu menu = InfoManager.getInst().searchMenu(index);
+		if(null == menu)
+			return false;
+		
+		if(menuType != menu.getType())
+			return false;
+		
+		return true;
+	}
 
 }

@@ -54,6 +54,8 @@ public class SaveManager {
 	
 	public void calAllMenu(){
 		System.out.println("******* 담은 메뉴 ********");
+		System.out.println("커피:"+getCoffeeMoney());
+		System.out.println("디저트:"+getDessertMoney());
 		int total = getCoffeeMoney()+getSeasonMoney()+getDessertMoney();
 		System.out.println("**** 총가격 :"+total+"**** ");		
 	}
@@ -69,7 +71,7 @@ public class SaveManager {
 			int optionValue = addOptionMoney((Coffee)menu);
 			allPrice += optionValue;
 			
-			System.out.println("["+(i+1)+"]이름:"+menu.getName()+" 옵션추가:"+optionValue+": 가격:"+menu.getPrice());
+			System.out.println("["+(i+1)+"]"+menu.getName()+": 가격:"+menu.getPrice()+" 옵션추가:"+optionValue+" 최종가격:"+(menu.getPrice()+optionValue));
 		}
 		return allPrice;
 	}
@@ -83,7 +85,7 @@ public class SaveManager {
 			
 			allPrice += menu.getPrice();
 
-			System.out.println("["+(i+1)+"]이름:"+menu.getName()+": 가격:"+menu.getPrice());
+			System.out.println("["+(i+1)+"]"+menu.getName()+": 가격:"+menu.getPrice());
 		}
 		return allPrice;
 	}
@@ -91,6 +93,7 @@ public class SaveManager {
 	private int getDessertMoney(){
 		int allPrice = 0;
 		int setMenuCount = calSetMenu();
+		System.out.println("메뉴:"+setMenuCount);
 		int setCount = 0;
 		int resultMoney = 0;			// 결과금액
 		int setDiscount = 0;			// 할인금액
@@ -99,18 +102,26 @@ public class SaveManager {
 			if(false == (menu instanceof Dessert))
 				continue;
 			
-			int price = menu.getPrice();
-			if(setCount < setMenuCount){				// 할인금액 적용
+			int price = menu.getPrice();								// 기존 가격
+			if(setCount < setMenuCount){								// 할인 받을 경우
 				Dessert dessert = (Dessert)menu;
-				resultMoney = (int)(price*dessert.getDiscount()*0.01);
-				setDiscount = (int) (price - resultMoney);
-				price += resultMoney;
+				resultMoney = (int)(price*dessert.getDiscount()*0.01); // 최종금액
+				//System.out.println("result:"+resultMoney);
+				setDiscount = (int) (price - resultMoney);			   // 할인금액
+				//System.out.println("discount:"+setDiscount);
 				++setCount;
+			}else{														// 할인안받을 
+				resultMoney = price; 									// 최종금액
+				setDiscount = 0;			   							// 할인금액
 			}
-			
-			allPrice += price;
+				
+			allPrice += resultMoney;									// 가격 더하기
 
-			System.out.println("["+(i+1)+"]이름:"+menu.getName()+": 가격:"+menu.getPrice()+" 세트할인금액:"+setDiscount);
+			System.out.println("["+(i+1)+"]"+menu.getName()+": 가격:"+menu.getPrice()+" 세트할인금액:"+setDiscount+" 최종금액:"+resultMoney);
+			
+			//초기화
+			
+			
 		}
 		return allPrice;
 	}

@@ -59,7 +59,6 @@ public class Manager {
 	// 여기선 전부 false를 리턴해야한다. return값이 true면 while문을 빠져나가기 때문이다
 	public boolean exec(final User user, final INPUT_TYPE inputType) {
 		try{
-			System.out.println("input:"+inputType);
 		switch(inputType) {
 		case LOGIN :
 			return user.login();					// info 정보 참조해서 로그인한다

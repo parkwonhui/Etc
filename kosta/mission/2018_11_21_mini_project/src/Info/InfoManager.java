@@ -89,28 +89,6 @@ public class InfoManager {
 			System.out.println(menu.getIndex() + ": " + menu.getName() + " 재고:" + menu.getStockNum());	
 		}
 	}
-
-	/*public void printCoffee(){
-		int size = menuinfo.size();
-		for (int i = 0; i < size; ++i) {
-			Menu menu = menuinfo.get(i);
-			if(menu instanceof Coffee)
-				continue;
-
-			System.out.println(i + ": " + menu.getName() + " 재고:" + menu.getStockNum());
-		}
-	}
-
-	public void printDessert(){
-		int size = menuinfo.size();
-		for (int i = 0; i < size; ++i) {
-			Menu menu = menuinfo.get(i);
-			if(menu instanceof Dessert)
-				continue;
-			
-			System.out.println(i + ": " + menu.getName() + " 재고:" + menu.getStockNum());
-		}
-	}*/
 	
 	public void allPrint(){
 		Set set = menuinfo.entrySet();
@@ -122,6 +100,67 @@ public class InfoManager {
 		}
 	}
 
+	// 메뉴 출력
+	public void allCoffeePrint(){
+		Set set = menuinfo.entrySet();
+		Iterator iter = set.iterator();
+		while(iter.hasNext()) {
+			Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>)iter.next();
+			Menu menu = temp.getValue();
+			if(null == menu)
+				continue;
+			
+			if(menu.MENUTYPE_COFFEE != menu.getType())
+				continue;
+			
+			System.out.print(menu.getIndex() + ": " + menu.getName() + " 가격:" + menu.getPrice());	
+			
+			if(0 >= menu.getStockNum())
+				System.out.println(" !수량없음 ");
+
+			else
+				System.out.println();
+		}
+	}
+	
+	public void allSeasonPrint(){
+		Set set = menuinfo.entrySet();
+		Iterator iter = set.iterator();
+		while(iter.hasNext()) {
+			Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>)iter.next();
+			Menu menu = temp.getValue();
+			if(menu.MENUTYPE_SEASON != menu.getType())
+				continue;
+			
+			System.out.print(menu.getIndex() + ": " + menu.getName() + " 가격:" + menu.getPrice());		
+			if(0 >= menu.getStockNum())
+				System.out.println(" !수량없음 ");
+
+			else
+				System.out.println();
+
+		}
+	}
+	
+	public void allDessertPrint(){
+		Set set = menuinfo.entrySet();
+		Iterator iter = set.iterator();
+		while(iter.hasNext()) {
+			Map.Entry<Integer, Menu> temp = (Map.Entry<Integer, Menu>)iter.next();
+			Menu menu = temp.getValue();
+			if(menu.MENUTYPE_DESSERT != menu.getType())
+				continue;
+			
+			System.out.print(menu.getIndex() + ": " + menu.getName() + " 가격:" + menu.getPrice());		
+			
+			if(0 >= menu.getStockNum())
+				System.out.println(" !수량없음 ");
+
+			else
+				System.out.println();
+		}
+	}
+	
 	public void readUser(String pass) {
 		BufferedReader br = null;
 
