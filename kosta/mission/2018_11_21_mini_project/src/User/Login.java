@@ -31,7 +31,7 @@ public class Login extends User {
 	@Override
 	public INPUT_TYPE mainMenu() throws Exception {
 		System.out.println("EDIE Coffee에 방문하신 "+userInfo.getId()+" 님을 환영합니다");
-		System.out.println("[유저모드/메뉴] 1.시즌메뉴 2.음료 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.결제 7.로그아웃");
+		System.out.println("[유저모드/메뉴] 1.음료 2.시즌메뉴 3.디저트 4.마이메뉴 5.마이메뉴 수정 6.결제 7.로그아웃");
 		System.out.println("===============================================");
 		int value = ScannerManager.ReadInt();
 		switch(value){

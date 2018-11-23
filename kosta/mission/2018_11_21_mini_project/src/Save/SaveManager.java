@@ -103,9 +103,7 @@ public class SaveManager {
 			if(setCount < setMenuCount){								// 할인 받을 경우
 				Dessert dessert = (Dessert)menu;
 				resultMoney = (int)(price*dessert.getDiscount()*0.01); // 최종금액
-				//System.out.println("result:"+resultMoney);
 				setDiscount = (int) (price - resultMoney);			   // 할인금액
-				//System.out.println("discount:"+setDiscount);
 				++setCount;
 			}else{														// 할인안받을 
 				resultMoney = price; 									// 최종금액
